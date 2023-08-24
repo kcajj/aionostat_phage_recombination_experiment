@@ -1,11 +1,13 @@
 import pysam
+import numpy as np
 
-def analyse_bam(bam_file):
+def analyse_bam(bam_file, l):
     with pysam.AlignmentFile(bam_file, "rb") as bam:
-        print(bam.get_reference_length())
+        mismatches=np.zeros(l)
+        mapping=np.zeros(l,dtype=bool)
         for read in bam.fetch():
-            print(read)
-    return 0
+            print(read.reference_start)
+    return mismatches,mapping
 
 if __name__ == "__main__":
     
@@ -18,5 +20,10 @@ if __name__ == "__main__":
     for population in populations:
         for isolate in isolates:
             
-            bam_file_path = f'results/mappings/{population}/new_chemistry/{isolate}.bam'
-            mismatch_distribution, mapping = analyse_bam(bam_file_path)
+            #get the length of the isolate genome
+
+            l=120000
+            bam_file_path = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
+            mismatch_distribution, mapping = analyse_bam(bam_file_path, l)
+            print(mismatch_distribution)
+            print(mapping)
