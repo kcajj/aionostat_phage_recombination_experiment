@@ -23,25 +23,22 @@ Poi pensavo di tenere i dati sui fagi e sui batteri completamente separati e far
 the idea is to keep bacteria and phage data separated and to set up two repositories.
 
 
-mappa le references tra di loro.
-
 minimap with a file with reads and 3 references, gives all mapping of reads to references.
-
 genome evolution sulle 2 fiale e le 3 references.
 
-assembly dei cloni e mappare le references.
 
-tutti i mapping di tutte le references.
+folder organisation
 
+we want to have a data folder shared on the cluster, then we create links to the data in my folder, this is called symlink, this is the command: ln -s source destination(file_name)
 
+when i create folders in the group folder, to put there the data and the results i have to give group permissions to my folder. you can do it with chmod g+rwx filename
 
-org cartelle
+## recombination genome analysis
 
-data folder
-repofolder
+1. assembly: we want to assemble genomes sequenced with ont, they are divided in populations, each population has a different reference.
 
-symlink
-
-ln -s source destination(file_name)
-
-give group permissions to execute
+2. mappings:
+    1. references: each reference mapped against the others
+        ref1
+    2. assemblies: map each reference onto the assembly
+        p2-c1: ref1, ref2

@@ -1,16 +1,14 @@
-configfile: "config.yml"
-
-nanopore_reads = 'data/nanopore/{phage}_{tag}.fastq.gz'
-reference = 'data/references/{phage}_reference.fasta'
+nanopore_reads = 'data/nanopore/{population}_{isolate}.fastq.gz'
+reference = 'data/references/{phage}_reference.fa'
 
 rule flye:
     input:
         reads = nanopore_reads
     output:
-        flye_folder = directory('results/{phage}/assemblies/{tag}_flye'),
-        assembly = 'results/{phage}/assemblies/{tag}.fasta'
+        flye_folder = directory('results/assemblies/{population}/{isolate}_flye'),
+        assembly = 'results/assemblies/{population}/{isolate}.fasta'
     params:
-        genome_size = lambda w : config["genome-size"][w.phage],
+        genome_size = '0.150m',
         cores = 4,
         coverage = 40
     conda:
@@ -26,28 +24,28 @@ rule flye:
         cp {output.flye_folder}/assembly.fasta {output.assembly}
         """
 
-rule minimap:
+rule alginment_to_assembly:
     input:
-        reads = lambda w : expand(rules.flye.input.reads, tag=w.qry_tag, phage=w.phage),
-        reference = lambda w : expand(rules.flye.output.assembly, tag=w.ref_tag, phage=w.phage)
+        assembly = rules.flye.output.assembly,
+        references = expand(reference, phage=['EC2D2','EM11','EM60'])
     output:
-        alignment = 'results/{phage}/mapping/{ref_tag}/{qry_tag}.sam'
+        alignment = 'results/mappings/{population}/{isolate}.sam'
     conda:
         'conda_envs/read_mapping.yml'
     shell:
         """
-        minimap2 -ax map-ont \
-            {input.reference} \
-            {input.reads} \
+        minimap2 -a \
+            {input.assembly} \
+            {input.references} \
             > {output.alignment}
         """
 
 rule bam:
     input:
-        sam = rules.minimap.output.alignment
+        sam = rules.alginment_to_assembly.output.alignment
     output:
-        bam = 'results/{phage}/mapping/{ref_tag}/{qry_tag}.bam',
-        bai = 'results/{phage}/mapping/{ref_tag}/{qry_tag}.bam.bai'
+        bam = 'results/mappings/{population}/{isolate}.bam',
+        bai = 'results/mappings/{population}/{isolate}.bam.bai'
     conda:
         'conda_envs/read_mapping.yml'
     params:
@@ -61,24 +59,21 @@ rule bam:
             {output.bai}
         """
 
-rule alginment_to_ref:
+rule alignment_references:
     input:
-        reference = reference,
-        assembly = rules.flye.output.assembly
+        reference = lambda w: expand(reference, phage=w.ref),
+        query = lambda w: expand(reference, phage=w.qry)
     output:
-        alignment = 'results/{phage}/mapping/reference/alignment_with_reference_{tag}.bam'
-    conda:
-        'conda_envs/read_mapping.yml'
+        alignment = 'results/mappings/references/{input.reference}/{input.query}.sam'
     shell:
         """
         minimap2 -a \
             {input.reference} \
-            {input.assembly} \
+            {input.query} \
             > {output.alignment}
         """
 
 rule all:
     input:
-        new_chemistry_assemblies = expand(rules.plot_pileup.output.plot_folder,ref_tag='new_chemistry',qry_tag=['new_chemistry','1','3','5'],phage=['EC2D2','EM11','EM60']),
-        old_chemistry_assemblies = expand(rules.plot_pileup.output.plot_folder,ref_tag='old_chemistry',qry_tag='old_chemistry',phage=['EC2D2','EM11','EM60']),
-        reference_alignments = expand(rules.alginment_to_ref.output.alignment,phage=['EC2D2','EM11','EM60'],tag=['new_chemistry','old_chemistry']),
+        assemblies = expand(rules.bam.output.bam,population=['P2','P3'],isolate='C1'),
+        references_alignments = expand(rules.alignment_references.output.alignment,ref=['EC2D2','EM11','EM60'],qry=['EC2D2','EM11','EM60']),

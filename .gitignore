@@ -1,1 +1,6 @@
 data
+results
+.snakemake
+log
+__pycache__
+.obsidian
