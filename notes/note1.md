@@ -23,4 +23,25 @@ Poi pensavo di tenere i dati sui fagi e sui batteri completamente separati e far
 the idea is to keep bacteria and phage data separated and to set up two repositories.
 
 
+mappa le references tra di loro.
 
+minimap with a file with reads and 3 references, gives all mapping of reads to references.
+
+genome evolution sulle 2 fiale e le 3 references.
+
+assembly dei cloni e mappare le references.
+
+tutti i mapping di tutte le references.
+
+
+
+org cartelle
+
+data folder
+repofolder
+
+symlink
+
+ln -s source destination(file_name)
+
+give group permissions to execute
