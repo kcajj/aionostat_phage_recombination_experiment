@@ -29,11 +29,8 @@ def analyse_bam(bam_file, ref_file):
 
 if __name__ == "__main__":
     
-    #populations=['P2','P3']
-    #isolates=['C1','C2','C3','C4']
-    
-    populations=['P2']
-    isolates=['C1']
+    populations=['P2','P3']
+    isolates=['C1','C2','C3','C4']
     k=10000
 
     for population in populations:
@@ -45,17 +42,18 @@ if __name__ == "__main__":
 
             mismatch_distribution, mapping = analyse_bam(bam_file, assembly_file)
 
+            figure=plt.figure()
             for reference, distribution in mismatch_distribution.items():
                 distribution=np.convolve(distribution,np.ones(k),'valid')/k
                 l=len(distribution)
                 x=np.linspace(0,l,l)
                 plt.plot(distribution)
             plt.legend(mismatch_distribution.keys())
-            plt.title(f'mutation density between assembly and references, with convolution of {k}')
+            plt.title(f'mutation density between isolate assembly and references (on clone {isolate}), with convolution of {k}')
             plt.ylabel('mutation density')
             plt.xlabel('bp')
-            plt.show()
-
+            figure.savefig(f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/{population}/{isolate}.png')
+            plt.close()
             for reference in mismatch_distribution.keys():
                 
                 ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_reference.fa'
@@ -63,6 +61,7 @@ if __name__ == "__main__":
 
                 mismatch_distribution, mapping = analyse_bam(sam_file, ref_file)
 
+                figure=plt.figure()
                 for name, distribution in mismatch_distribution.items():
                     distribution=np.convolve(distribution,np.ones(k),'valid')/k
                     l=len(distribution)
@@ -72,4 +71,5 @@ if __name__ == "__main__":
                 plt.title(f'mutation density between references (on {reference}), with convolution of {k}')
                 plt.ylabel('mutation density')
                 plt.xlabel('bp')
-                plt.show()
+                figure.savefig(f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/references/{reference}.png')
+                plt.close()
