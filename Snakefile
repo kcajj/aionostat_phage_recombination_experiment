@@ -40,6 +40,22 @@ rule alginment_to_assembly:
             > {output.alignment}
         """
 
+rule alignment_references:
+    input:
+        reference = lambda w: expand(reference, phage=w.ref),
+        query = lambda w: expand(reference, phage=['EC2D2','EM11','EM60'])
+    output:
+        alignment = 'results/mappings/references/{ref}.sam'
+    conda:
+        'conda_envs/read_mapping.yml'
+    shell:
+        """
+        minimap2 -a \
+            {input.reference} \
+            {input.query} \
+            > {output.alignment}
+        """
+
 rule bam:
     input:
         sam = rules.alginment_to_assembly.output.alignment
@@ -59,23 +75,7 @@ rule bam:
             {output.bai}
         """
 
-rule alignment_references:
-    input:
-        reference = lambda w: expand(reference, phage=w.ref),
-        query = lambda w: expand(reference, phage=w.qry)
-    output:
-        alignment = 'results/mappings/references/{ref}/{qry}.sam'
-    conda:
-        'conda_envs/read_mapping.yml'
-    shell:
-        """
-        minimap2 -a \
-            {input.reference} \
-            {input.query} \
-            > {output.alignment}
-        """
-
 rule all:
     input:
         assemblies = expand(rules.bam.output.bam,population=['P2','P3'],isolate=['C1','C2','C3','C4']),
-        references_alignments = expand(rules.alignment_references.output.alignment,ref=['EC2D2','EM11','EM60'],qry=['EC2D2','EM11','EM60']),
+        references_alignments = expand(rules.alignment_references.output.alignment,ref=['EC2D2','EM11','EM60']),

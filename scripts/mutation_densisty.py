@@ -1,22 +1,24 @@
 import pysam
 from Bio import SeqIO
 import numpy as np
+from collections import defaultdict
+import matplotlib.pyplot as plt
 
-def analyse_bam(bam_file, l):
+def analyse_bam(bam_file, ref, l):
     with pysam.AlignmentFile(bam_file, "rb") as bam:
-        mismatches=np.zeros(l)
-        mapping=np.zeros(l,dtype=bool)
+        #mapping and mismatches arrays for each read_name
+        mismatches=defaultdict(lambda: np.zeros(l))
+        mapping=defaultdict(lambda: np.zeros(l,dtype=bool))
         for read in bam.fetch():
-            print(read.reference_start)
+            start=read.reference_start
+            end=read.reference_end
+            for pos,val in enumerate(mapping):
+                if pos>=start and pos<end:
+                    mapping[read.query_name][pos]=True
             for (read_pos,reference_pos) in read.get_aligned_pairs():
                 if reference_pos!=None and read_pos!=None:
-                    print(read_pos,reference_pos)
-                    print(read.query_sequence[read_pos])
-                    #if ref_seq==read.query_sequence[read_pos]:
-
-                    #add mismatch count
-                    #add mapping positions
-                        
+                    if ref[reference_pos]!=read.query_sequence[read_pos]:
+                        mismatches[read.query_name][reference_pos]+=1 
     return mismatches,mapping
 
 if __name__ == "__main__":
@@ -31,11 +33,32 @@ if __name__ == "__main__":
         for isolate in isolates:
             
             #get the length of the isolate genome
-            assembly=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/assemblies/{population}/{isolate}.fasta'
-            seq = SeqIO.read(assembly, "fasta").seq
-            l=len(seq)
+            assembly_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/assemblies/{population}/{isolate}.fasta'
+            ref = SeqIO.read(assembly_file, "fasta").seq
+            l=len(ref)
 
             bam_file_path = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
-            mismatch_distribution, mapping = analyse_bam(bam_file_path, l)
-            print(mismatch_distribution)
-            print(mapping)
+            mismatch_distribution, mapping = analyse_bam(bam_file_path, ref, l)
+            #np.set_printoptions(threshold=99999999)
+            #print(mismatch_distribution)
+
+            k=10000
+
+            for reference, distribution in mismatch_distribution.items():
+                distribution=np.convolve(distribution,np.ones(k),'valid')/k
+                l=len(distribution)
+                x=np.linspace(0,l,l)
+                plt.plot(distribution)
+            plt.legend(mismatch_distribution.keys())
+            plt.title('mutation density between assembly and references')
+            plt.ylabel('mutation density')
+            plt.xlabel('bp')
+            plt.show()
+
+            references=[]
+            for reference in mismatch_distribution.keys():
+                references.append(reference)
+
+            for reference in references:
+                ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}/{isolate}.bam'
+            #plot the alignments between references
