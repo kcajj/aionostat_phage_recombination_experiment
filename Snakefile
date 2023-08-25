@@ -1,5 +1,5 @@
 nanopore_reads = 'data/nanopore/{population}_{isolate}.fastq.gz'
-reference = 'data/references/{phage}_reference.fa'
+reference = 'data/references/{phage}_assembly.fasta'
 
 rule flye:
     input:
@@ -55,9 +55,7 @@ rule alignment_references:
         reference = lambda w: expand(reference, phage=w.ref),
         query = lambda w: expand(reference, phage=['EC2D2','EM11','EM60'])
     output:
-        alignment = 'results/mappings/references/{ref}.sam',
-        bam = 'results/mappings/references/{ref}.bam',
-        bai = 'results/mappings/references/{ref}.bam.bai'
+        alignment = 'results/mappings/references/{ref}.sam'
     conda:
         'conda_envs/read_mapping.yml'
     params:
@@ -68,12 +66,6 @@ rule alignment_references:
             {input.reference} \
             {input.query} \
             > {output.alignment}
-            
-        samtools sort -@ {params.cores} \
-            -o {output.bam} \
-            {output.alignment}
-        samtools index {output.bam} \
-            {output.bai}
         """
 
 rule all:
