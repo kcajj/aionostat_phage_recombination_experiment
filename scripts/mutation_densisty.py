@@ -37,8 +37,8 @@ if __name__ == "__main__":
             ref = SeqIO.read(assembly_file, "fasta").seq
             l=len(ref)
 
-            bam_file_path = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
-            mismatch_distribution, mapping = analyse_bam(bam_file_path, ref, l)
+            bam_file = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
+            mismatch_distribution, mapping = analyse_bam(bam_file, ref, l)
             #np.set_printoptions(threshold=99999999)
             #print(mismatch_distribution)
 
@@ -60,5 +60,10 @@ if __name__ == "__main__":
                 references.append(reference)
 
             for reference in references:
-                ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}/{isolate}.bam'
+                ref_file=f'data/references/'
+                ref = SeqIO.read(ref_file, "fasta").seq
+                l=len(ref)
+
+                sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
+
             #plot the alignments between references
