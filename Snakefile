@@ -29,37 +29,7 @@ rule alginment_to_assembly:
         assembly = rules.flye.output.assembly,
         references = expand(reference, phage=['EC2D2','EM11','EM60'])
     output:
-        alignment = 'results/mappings/{population}/{isolate}.sam'
-    conda:
-        'conda_envs/read_mapping.yml'
-    shell:
-        """
-        minimap2 -a \
-            {input.assembly} \
-            {input.references} \
-            > {output.alignment}
-        """
-
-rule alignment_references:
-    input:
-        reference = lambda w: expand(reference, phage=w.ref),
-        query = lambda w: expand(reference, phage=['EC2D2','EM11','EM60'])
-    output:
-        alignment = 'results/mappings/references/{ref}.sam'
-    conda:
-        'conda_envs/read_mapping.yml'
-    shell:
-        """
-        minimap2 -a \
-            {input.reference} \
-            {input.query} \
-            > {output.alignment}
-        """
-
-rule bam:
-    input:
-        sam = rules.alginment_to_assembly.output.alignment
-    output:
+        alignment = 'results/mappings/{population}/{isolate}.sam',
         bam = 'results/mappings/{population}/{isolate}.bam',
         bai = 'results/mappings/{population}/{isolate}.bam.bai'
     conda:
@@ -68,17 +38,24 @@ rule bam:
         cores = 4
     shell:
         """
+        minimap2 -a \
+            {input.assembly} \
+            {input.references} \
+            > {output.alignment}
+
         samtools sort -@ {params.cores} \
             -o {output.bam} \
-            {input.sam}
+            {output.alignment}
         samtools index {output.bam} \
             {output.bai}
         """
 
-rule bam2:
+rule alignment_references:
     input:
-        sam = rules.alignment_references.output.alignment
+        reference = lambda w: expand(reference, phage=w.ref),
+        query = lambda w: expand(reference, phage=['EC2D2','EM11','EM60'])
     output:
+        alignment = 'results/mappings/references/{ref}.sam',
         bam = 'results/mappings/references/{ref}.bam',
         bai = 'results/mappings/references/{ref}.bam.bai'
     conda:
@@ -87,14 +64,19 @@ rule bam2:
         cores = 4
     shell:
         """
+        minimap2 -a \
+            {input.reference} \
+            {input.query} \
+            > {output.alignment}
+            
         samtools sort -@ {params.cores} \
             -o {output.bam} \
-            {input.sam}
+            {output.alignment}
         samtools index {output.bam} \
             {output.bai}
         """
 
 rule all:
     input:
-        assemblies = expand(rules.bam.output.bam,population=['P2','P3'],isolate=['C1','C2','C3','C4']),
-        references_alignments = expand(rules.bam2.output.bam,ref=['EC2D2','EM11','EM60'])
+        assemblies = expand(rules.alginment_to_assembly.output.alignment,population=['P2','P3'],isolate=['C1','C2','C3','C4']),
+        references_alignments = expand(rules.alignment_references.output.alignment,ref=['EC2D2','EM11','EM60'])
