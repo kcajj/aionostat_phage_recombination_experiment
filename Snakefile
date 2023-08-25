@@ -75,7 +75,26 @@ rule bam:
             {output.bai}
         """
 
+rule bam2:
+    input:
+        sam = rules.alignment_references.output.alignment
+    output:
+        bam = 'results/mappings/references/{ref}.bam',
+        bai = 'results/mappings/references/{ref}.bam.bai'
+    conda:
+        'conda_envs/read_mapping.yml'
+    params:
+        cores = 4
+    shell:
+        """
+        samtools sort -@ {params.cores} \
+            -o {output.bam} \
+            {input.sam}
+        samtools index {output.bam} \
+            {output.bai}
+        """
+
 rule all:
     input:
         assemblies = expand(rules.bam.output.bam,population=['P2','P3'],isolate=['C1','C2','C3','C4']),
-        references_alignments = expand(rules.alignment_references.output.alignment,ref=['EC2D2','EM11','EM60'])
+        references_alignments = expand(rules.bam2.output.bam,ref=['EC2D2','EM11','EM60'])

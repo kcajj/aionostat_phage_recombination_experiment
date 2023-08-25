@@ -4,7 +4,7 @@ import numpy as np
 from collections import defaultdict
 import matplotlib.pyplot as plt
 
-def analyse_bam(bam_file, ref, l):
+def analyse_bam(bam_file, ref):
     ref_name=ref.name
     ref_seq=ref.seq
     l=len(ref_seq)
@@ -13,10 +13,12 @@ def analyse_bam(bam_file, ref, l):
         mismatches=defaultdict(lambda: np.zeros(l))
         mapping=defaultdict(lambda: np.zeros(l,dtype=bool))
         for read in bam.fetch():
+            print(ref_name, read.query_name)
             if read.query_name==ref_name:
                 continue
             start=read.reference_start
             end=read.reference_end
+            print(start,end)
             for pos,val in enumerate(mapping):
                 if pos>=start and pos<end:
                     mapping[read.query_name][pos]=True
@@ -59,27 +61,25 @@ if __name__ == "__main__":
             plt.xlabel('bp')
             plt.show()
 
-            references=[]
             for reference in mismatch_distribution.keys():
-                references.append(reference)
-
-            for reference in references:
-                ref_file=f'data/references/{reference}_reference.fa'
-                ref = SeqIO.read(ref_file, "fasta").seq
-                l=len(ref)
+                
+                print(reference)
+                ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_reference.fa'
+                ref = SeqIO.read(ref_file, "fasta")
 
                 sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
-                mismatch_distribution, mapping = analyse_bam(bam_file, ref, l)
+                print(ref_file, sam_file)
+                mismatch_distribution, mapping = analyse_bam(bam_file, ref)
             
                 k=10000
 
-                for reference, distribution in mismatch_distribution.items():
+                for name, distribution in mismatch_distribution.items():
                     distribution=np.convolve(distribution,np.ones(k),'valid')/k
                     l=len(distribution)
                     x=np.linspace(0,l,l)
                     plt.plot(distribution)
                 plt.legend(mismatch_distribution.keys())
-                plt.title('mutation density between assembly and references')
+                plt.title(f'mutation density between references (on {reference})')
                 plt.ylabel('mutation density')
                 plt.xlabel('bp')
                 plt.show()
