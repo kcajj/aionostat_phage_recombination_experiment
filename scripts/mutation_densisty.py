@@ -36,7 +36,6 @@ if __name__ == "__main__":
     for population in populations:
         for isolate in isolates:
             
-            #get the length of the isolate genome
             assembly_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/assemblies/{population}/{isolate}.fasta'
             bam_file = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
 
@@ -80,7 +79,7 @@ if __name__ == "__main__":
 
             for reference in mismatch_distribution.keys():
                 
-                ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_reference.fa'
+                ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_assembly.fasta'
                 sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
 
                 mismatch_distribution, mapping = analyse_bam(sam_file, ref_file)
