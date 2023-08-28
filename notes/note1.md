@@ -28,7 +28,7 @@ the results that we obtained are striking!
 
 ## population 2
 
-clone-1:
+clone-1: this clone shows the perfect characteristics of recombination
 
 ![c1](/results/plots/P2/C1.png)
 
@@ -36,7 +36,7 @@ clone-2:
 
 ![c2](/results/plots/P2/C2.png)
 
-clone-3:
+clone-3: this is a good recombinant but at base 110 000, shows a high distance from EM11.
 
 ![c3](/results/plots/P2/C3.png)
 
@@ -47,10 +47,6 @@ clone-4:
 the first thing that we notice is that c1,3 are similar between each other and different from c2,4. possibly, the formers represent recombined genomes correctly assembled while the latters have some contaminant DNA that coused some strange behaviour.
 
 from what we can see the phages in population 2 have recombined. a small portion of EM60 was integrated in EM11 genome.
-
-### clone 1
-
-shows perfect characteristics of recombination
 
 ### clone 2
 
@@ -66,10 +62,6 @@ clone 2 presents some strange characteristics:
 2. there are some supplementary alignments at the borders of the genome, no clue of what they could be.
 
     ![supplementary](images/P2/supplementary.png)
-
-### clone 3
-
-this genome, more or less at base 110 000, shows a high distance from EM11.
 
 ### clone 4
 
@@ -121,7 +113,13 @@ pileups:
     - "P3_7"
 </pre>
 
-the reference files contain 3 phage genome references. the results will be obtained for each reference.
+the reference files contain 3 phage genome references. the results will be obtained for each reference. note that we used as reference the phage assembly produced by our lab for the phage evolution experiment. we decided to use such references because they are more coherent with the linearised form of the phage genome and they allow a clearer interpretation of the data.
+
+it is very important during this analysis to find out what are the signs of recombination. since we know that some ricombination happened in population two, we can try to see what the recombination has caused in the population alignment data. we want to learn how we can detect recombination from population data. establish some principles.
+
+then we can look at the second population to see if there are some similar signals that suggest the start of recombination or something similar.
+
+during the analysis i will also look for signals of phage evolution. i will try to keep the two categories of results separated.
 
 ## population 2
 
@@ -298,12 +296,12 @@ in this case the majority is on the top right and bottom left because each read 
 
 ## recap
 
-the signs of recombination were found in:
+thanks to the reconstructed recombinant genomes we were able to determine that the signs of recombination in population data can be found in:
 
 - coverage: some areas of genomes become more or less covered (presence of gaps and insertions only in these areas.)
 - non consensus region in correspondance of the recombination site
 
-we can be pretty sure that these are signs of recombinations thanks to the reconstructed recombinant genomes.
+apart from the ovious recombination, the genome probably have mixed also around base 120 000. we have strong evidence in coverage and non consensus data so we are happy.
 
 ## population 3
 
@@ -314,37 +312,37 @@ summary of the coverage info across timepoints:
 1. <pre>
     ----- primary mappings -----
             n. reads  avg. read len (bp)  tot mapped len (bp)  avg. coverage
-    EC2D2           10         4993.400000                49588       0.329653
-    EM11        169958         5572.249579            907297418    6450.333203
-    EM60          2481         2330.233777              5426791      39.801615
-    unmapped       176         3765.500000                    0            NaN
+    EC2D2           10         4993.400000                49588       0.328957
+    EM11        169971         5571.966836            930354051    6593.065395
+    EM60          2480         2345.018145              5585607      40.798251
+    unmapped       164         3683.000000                    0            NaN
     </pre>
 
 3. <pre>
     ----- primary mappings -----
             n. reads  avg. read len (bp)  tot mapped len (bp)  avg. coverage
     EC2D2          NaN                 NaN                  NaN            NaN
-    EM11      120721.0         3116.488788          363456028.0    2583.951457
-    EM60        3136.0         1604.736926            4671650.0      34.263198
-    unmapped     215.0         4657.125581                  0.0            NaN
+    EM11      120759.0         3114.871844          368685238.0    2612.732090
+    EM60        3109.0         1664.498231            4763118.0      34.790648
+    unmapped     204.0         4586.500000                  0.0            NaN
     </pre>
 
 5. <pre>
     ----- primary mappings -----
             n. reads  avg. read len (bp)  tot mapped len (bp)  avg. coverage
-    EC2D2            5         1843.000000                 9081       0.060369
-    EM11        107407         1901.487873            196881417    1399.707214
-    EM60          4103         1144.653668              4298746      31.528215
-    unmapped       576         2256.750000                    0            NaN
+    EC2D2            5         1843.000000                 9081       0.060242
+    EM11        107361         1902.141420            199082433    1410.821502
+    EM60          4165         1147.916206              4328376      31.615216
+    unmapped       560         2201.132143                    0            NaN
     </pre>
 
 7. <pre>
     ----- primary mappings -----
             n. reads  avg. read len (bp)  tot mapped len (bp)  avg. coverage
     EC2D2          NaN                 NaN                  NaN            NaN
-    EM11       38445.0         2251.192769           83552582.0     594.008076
-    EM60        1565.0         1347.313099            2051883.0      15.049088
-    unmapped      93.0         3362.763441                  0.0            NaN
+    EM11       38406.0         2253.608629           84499218.0     598.813827
+    EM60        1607.0         1315.255134            2057363.0      15.027340
+    unmapped      90.0         3363.111111                  0.0            NaN
     </pre>
 
 in this case the proportions of EM11 and EM60 are less similar. this makes the whole detection of recombination already more difficult.
@@ -353,15 +351,15 @@ in this case the proportions of EM11 and EM60 are less similar. this makes the w
 
 ![EM11_coverage](images/P3/EM11_coverage.png)
 
-what we can see from this coverage is that there seems to be a gap, and there is a strange dip in coverage near the end of the genome
+what we can see from this coverage is that there seems to be a gap in the same region as population 2. the rest of the genome has stable coverage over the days.
 
 #### EM60
 
 ![EM60_coverage](images/P3/EM60_coverage.png)
 
-this is a way noisier plot, we see some spikes at the beginning, no idea why are they there. they are abundant from day 1.
+this is a way noisier plot, we see some huge spikes in the second part of the genome, no idea why are they there. another strange characteristic of them is that they are abundant from day 1.
 
-the general trend of coverage goes toward zero during the experiment, except for the last part, this has a profile similar to the recombination of population 2.
+the general trend of coverage goes toward zero during the experiment, except for the initial, this has a profile similar to the recombination of population 2 and it is in the same region.
 
 ### clips
 
@@ -371,13 +369,11 @@ last timepoint:
 
 ![EM11_n_clips](images/P3/EM11_n_clips.png)
 
-there are clips in correspondence of the gap and at the borders of the genome, in theory the reference is in the correct reading frame as the linearised genome, so we shouldn't have such clips.
+there are just clips in correspondence of the gap.
 
 #### EM60
 
-![EM60_n_clips](images/P3/EM60_n_clips.png)
-
-we cannot determine if there are actually some clipped regions from this data, they are always in correspondence of low covered regions.
+all the clip signals are probably noise, they are in regions with low coverage.
 
 ### gaps
 
@@ -385,13 +381,15 @@ we cannot determine if there are actually some clipped regions from this data, t
 
 ![EM11_gap_summary](images/P3/EM11_gap_summary.png)
 
-there are some gaps at the beginning, probably just some mutation on a gene. some other gap near 8000 again it is separated from what we have seen until now.
+we just see the deletion as in population 2.
 
 #### EM60
 
 there is one gap! in the region that is increasing in coverage. also in the previous population we saw that the region that recombined was of course the only one that could get modifications.
 
 ![EM60_gap_trajs](images/P3/EM11_gap_trajs.png)
+
+it is very probable that also in this case the initial part of the genome is recombining, but there are too many EM11 to see the effect.
 
 ### insertions
 
@@ -409,6 +407,10 @@ last timestep:
 
 ![EM60_n_insertions](images/P3/EM60_n_insertions.png)
 
+a couple of them at the beginning seem to have an ok trajectory:
+
+![EM60_insertions_trajs](images/P3/EM60_insertions_trajs.png)
+
 ### consensus
 
 #### EM11
@@ -417,11 +419,15 @@ there are very few mutations and no significant trajectories, this is so strange
 
 ![EM11_consensus_summary](images/P3/EM11_consensus_summary.png)
 
+maybe they are a bit concentrated in the first part.
+
 #### EM60
 
 ![EM60_consensus_summary](images/P3/EM60_consensus_summary.png)
 
-in EM60 we have some mismatches at the beginning of the "recombination region" our hypothesis is getting more probable. this is very consistent with the previous population. the reads at the border of the recombination regions are mapped on one or the other genome and they have mutations.
+in EM60 we have some mismatches at the beginning of the "recombination region" our hypothesis is getting more probable. this is very consistent with what we observed in the previous population. the reads at the border of the recombination regions are mapped on one or the other genome and they have mutations.
+
+actually in the previous population the mutations were in the junction internal to the genome, not at the border, which makes a lot more sense.
 
 there is one significant trajectory outside the recombination region
 ![EM60_consensus_trajs](images/P3/EM60_consensus_trajs.png)
@@ -432,12 +438,27 @@ there is one significant trajectory outside the recombination region
 
 on the self-supplementaries of EM11 we can clearly see the gap.
 
-we do not have much signal for EM60 but the few supplementaries are in the region that is more covered.
+we do not have much signal for EM60 but the few supplementaries are in the region that is more covered. i.e. the one that is surviving thanks to recombinant phages.
 
-maybe we are not getting the correct supplementary coordinates because the code is wrong. or because it is hard in general.
+why are we not seeing any supplementary alignments between the two genomes? they are too similar, the aligner just maps the whole read onto one of the references.
 
-in this case there is way less noise also at timepoint 1 with respect to population 2, probably because we have less EM60.
-
-in EM11 we see supplementary alignments at the borders of the genome, we did not see them in population 2, why is that?
+in this case there is way less signal in EM60 also at timepoint 1, probably because we have less EM60.
 
 ### secondary alignments
+
+![EM1160_secondary_alignments](images/P3/EM1160_secondary_alignments.png)
+
+again the majority of secondary mapping are between the two genomes, and again there is some off diagonal signal on the gap.
+
+there is no signal suggesting something about genome recombination.
+
+## recap
+
+- the coverage data suggests that there could be some amount of recombinant phages. that's the strongest evidence that we have.
+    they are less with respect to the first population maybe because of the initial missproportion between EM11 and EM60
+
+
+
+
+
+how to quantify all this?
