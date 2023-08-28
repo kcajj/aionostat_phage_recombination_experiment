@@ -1,31 +1,7 @@
-import pysam
-from Bio import SeqIO
 import numpy as np
-from collections import defaultdict
 import matplotlib.pyplot as plt
 
-def analyse_bam(bam_file, ref_file):
-    ref = SeqIO.read(ref_file, "fasta")
-    ref_name=ref.name
-    ref_seq=ref.seq
-    l=len(ref_seq)
-    with pysam.AlignmentFile(bam_file, "rb") as bam:
-        #mapping and mismatches arrays for each read_name
-        mismatches=defaultdict(lambda: np.zeros(l))
-        mapping=defaultdict(lambda: np.ones(l))
-        for read in bam.fetch():
-            if read.query_name==ref_name:
-                continue
-            start=read.reference_start
-            end=read.reference_end
-            for pos,val in enumerate(mapping[read.query_name]):
-                if pos>=start and pos<end:
-                    mapping[read.query_name][pos]=read.flag
-            for (read_pos,reference_pos) in read.get_aligned_pairs():
-                if reference_pos!=None and read_pos!=None:
-                    if ref_seq[reference_pos]!=read.query_sequence[read_pos]:
-                        mismatches[read.query_name][reference_pos]+=1
-    return mismatches,mapping
+from analyse_bam import analyse_bam
 
 if __name__ == "__main__":
     
@@ -41,41 +17,37 @@ if __name__ == "__main__":
 
             mismatch_distribution, mapping = analyse_bam(bam_file, assembly_file)
 
-            fig, axs =plt.subplots(2,sharex=True)
+            fig, axs =plt.subplots(2,sharex=True,constrained_layout = True)
             for reference, distribution in mismatch_distribution.items():
                 distribution=np.convolve(distribution,np.ones(k),'valid')/k
                 l=len(distribution)
                 x=np.linspace(0,l,l)
                 axs[0].plot(distribution)
             axs[0].legend(mismatch_distribution.keys())
-            axs[0].set_title(f'mutation density between isolate assembly and references (on clone {isolate}), with convolution of {k}')
+            fig.suptitle('population: '+population)
+            axs[0].set_title(f'mutation density distribution between {isolate} and references, with convolution window of {k}')
             axs[0].set_ylabel('mutation density')
             axs[0].set_xlabel('bp')
 
-            primary_y=[]
-            primary_x=[]
-            supp_y=[]
-            supp_x=[]
-            for reference, map in mapping.items():
-                for pos, val in enumerate(map):
-                    if val==1:
-                        continue
-                    elif val==0 or val==16:
-                        primary_y.append(reference)
-                        primary_x.append(pos)
-                    elif val==2048 or val==2064:
-                        supp_y.append(reference)
-                        supp_x.append(pos)
-                    else:
-                        raise ValueError
-            axs[1].scatter(primary_x,primary_y,label='primary')
-            axs[1].scatter(supp_x, supp_y, label='supp')
-            axs[1].legend()
+            for reference, all_alignments in mapping.items():
+                for alignment_type, map in all_alignments.items():
+                    y=[]
+                    x=[]
+                    for pos, val in enumerate(map):
+                        if val==True:
+                            x.append(pos)
+                            y.append(reference+' '+alignment_type)
+                    colors={'primary':'red','supplementary':'purple','secondary':'pink'}
+                    axs[1].scatter(x,y,
+                                   s=5,
+                                   alpha=0.2,
+                                   c=colors[alignment_type],
+                                   label=alignment_type)
 
-
-            fig.savefig(f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/{population}/{isolate}.png')
-            
-            
+            #axs[1].legend()
+            axs[1].set_title('mapping information of the references on the assembly')
+            fig.savefig(f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/{population}/{isolate}.png',
+                        bbox_inches='tight')
 
             for reference in mismatch_distribution.keys():
                 
