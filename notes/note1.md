@@ -462,3 +462,11 @@ there is no signal suggesting something about genome recombination.
 
 
 how to quantify all this?
+
+polish clone assemblies
+dot plot + similarity between two references (length between snps?)
+
+map on the assembly
+align with different parameters (read length, snps score) (most reads with no secondary mapping)
+process recombinant reads
+look at secondary mappings
