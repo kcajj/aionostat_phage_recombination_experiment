@@ -18,7 +18,7 @@ def analyse_bam(bam_file, ref_file):
 
         #mapping and mismatches arrays for each read_name
         mismatches=defaultdict(lambda: np.zeros(l))
-        mapping=defaultdict(lambda: {'primary':np.zeros(l,dtype=bool),'supplementary':np.zeros(l,dtype=bool),'secondary':np.zeros(l,dtype=bool)})
+        mapping=defaultdict(lambda: {'primary':[],'supplementary':[],'secondary':[]})
         coverage=defaultdict(lambda: np.zeros(l))
 
         for read in bam.fetch():
@@ -30,12 +30,8 @@ def analyse_bam(bam_file, ref_file):
             # mapping array
             start=read.reference_start
             end=read.reference_end
-            for type,map in mapping[read.query_name].items():
-                for pos,value in enumerate(map):
-                    if pos>=start:
-                        if pos>=end: break
-                        alignment_type = decode_flag(read.flag)
-                        mapping[read.query_name][alignment_type][pos]=True
+            alignment_type = decode_flag(read.flag)
+            mapping[read.query_name][alignment_type].append((start,end))
             
             # mismatches array
             for (read_pos,reference_pos) in read.get_aligned_pairs():

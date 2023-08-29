@@ -3,68 +3,66 @@ import matplotlib.pyplot as plt
 
 from analyse_bam import analyse_bam
 
+def plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder):
+    fig, axs =plt.subplots(4,sharex=True,constrained_layout = True, figsize=(8,10))
+
+    fig.suptitle(f'mutation density distribution between {population}-{isolate} and references, with convolution window of {k}')
+
+    for reference, distribution in mismatch_distribution.items():
+        distribution=np.convolve(distribution,np.ones(k),'valid')/k
+        l=len(distribution)
+        x=np.linspace(0,l,l)
+        axs[0].plot(x,distribution,color=phage_colors[reference])
+    axs[0].legend(mismatch_distribution.keys())
+    axs[0].set_title(reference)
+    axs[0].set_ylabel('mutation density')
+    axs[0].set_xlabel('bp')
+
+    c=1
+    for reference, distribution in mismatch_distribution.items():
+        axs[c].set_title(reference)
+        axs[c].set_ylabel('mutation density')
+        axs[c].set_xlabel('bp')
+
+        distribution=np.convolve(distribution,np.ones(k),'valid')/k
+        l=len(distribution)
+        x=np.linspace(0,l,l)
+        axs[c].plot(x,distribution,c=phage_colors[reference])
+
+        for alignment_type, maps in mapping[reference].items():
+            for map in maps:
+                axs[c].axvspan(map[0],map[1],facecolor=mapping_colors[alignment_type],alpha=0.2)
+
+        c+=1
+        
+    fig.savefig(out_folder, bbox_inches='tight')
+    
 if __name__ == "__main__":
     
     populations=['P2','P3']
     isolates=['C1','C2','C3','C4']
     k=1000
 
+    phage_colors={'EC2D2':'C2','EM11':'C0','EM60':'C1'}
+    mapping_colors={'primary':'g','supplementary':'b','secondary':'r'}
+
     for population in populations:
         for isolate in isolates:
             
             assembly_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/assemblies/{population}/{isolate}.fasta'
             bam_file = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
+            out_folder = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/{population}/{isolate}.png'
 
             mismatch_distribution, mapping = analyse_bam(bam_file, assembly_file)
 
-            fig, axs =plt.subplots(2,sharex=True,constrained_layout = True)
-            for reference, distribution in mismatch_distribution.items():
-                distribution=np.convolve(distribution,np.ones(k),'valid')/k
-                l=len(distribution)
-                x=np.linspace(0,l,l)
-                axs[0].plot(distribution)
-            axs[0].legend(mismatch_distribution.keys())
-            fig.suptitle('population: '+population)
-            axs[0].set_title(f'mutation density distribution between {isolate} and references, with convolution window of {k}')
-            axs[0].set_ylabel('mutation density')
-            axs[0].set_xlabel('bp')
-
-            for reference, all_alignments in mapping.items():
-                for alignment_type, map in all_alignments.items():
-                    y=[]
-                    x=[]
-                    for pos, val in enumerate(map):
-                        if val==True:
-                            x.append(pos)
-                            y.append(reference+' '+alignment_type)
-                    colors={'primary':'red','supplementary':'purple','secondary':'pink'}
-                    axs[1].scatter(x,y,
-                                   s=5,
-                                   alpha=0.2,
-                                   c=colors[alignment_type],
-                                   label=alignment_type)
-
-            #axs[1].legend()
-            axs[1].set_title('mapping information of the references on the assembly')
-            fig.savefig(f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/{population}/{isolate}.png',
-                        bbox_inches='tight')
+            plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder)
 
             for reference in mismatch_distribution.keys():
                 
                 ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_assembly.fasta'
                 sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
+                out_folder=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/references/{reference}.png'
 
                 mismatch_distribution, mapping = analyse_bam(sam_file, ref_file)
 
-                figure=plt.figure()
-                for name, distribution in mismatch_distribution.items():
-                    distribution=np.convolve(distribution,np.ones(k),'valid')/k
-                    l=len(distribution)
-                    x=np.linspace(0,l,l)
-                    plt.plot(distribution)
-                plt.legend(mismatch_distribution.keys())
-                plt.title(f'mutation density between references (on {reference}), with convolution of {k}')
-                plt.ylabel('mutation density')
-                plt.xlabel('bp')
-                figure.savefig(f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/references/{reference}.png')
-                plt.close()
+                plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder)
