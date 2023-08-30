@@ -37,7 +37,7 @@ def plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_fo
         c+=1
         
     fig.savefig(out_folder, bbox_inches='tight')
-    plt.close()
+    plt.close(fig)
     
 if __name__ == "__main__":
     

@@ -1,0 +1,26 @@
+- [ ] phage isolates
+    - [ ] build pipeline
+        - [x] assembly
+        - [ ] rename of the assemblies
+        - [x] map reads on assembly
+        - [ ] map references on assembly
+        - [ ] map references on references
+        - [ ] map assemblies on assemblies (analysis on evolution of each phage)
+    - [ ] build plotting scipt
+        - [x] mutation density between assembly and references
+        - [x] mutation density between references
+        - [ ] integrate the script in the pipeline (take in input the folders)
+- [ ] phage populations
+    - [x] run evo genome analysis on the three references
+    - [ ] run evo genome analysis on the assembled recombinant genomes
+- [ ] improve the results
+    - [x] correct the recombinant assemblies by hand
+    - [ ] make dot_plot-mutation_density_between_references-coverage_of_population_on_reference plot
+        - [ ] take the data to build the coverage of population on a reference plot from the evo genome analysis pipeline
+        - [ ] take the code to build a dot plot somewhere
+        - [ ] plot the three plots on on top of the other
+    - [ ] look at reads stats, filter reads by length
+    - [ ] sweep minimap parameters
+        - [ ] asm-5
+        - [ ] -m
+    
