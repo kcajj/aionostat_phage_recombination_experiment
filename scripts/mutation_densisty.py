@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from analyse_bam import analyse_bam
 
 def plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder):
-    fig, axs =plt.subplots(4,sharex=True,constrained_layout = True, figsize=(8,10))
+    number_of_plots=len(mismatch_distribution.keys())+1
+    fig, axs =plt.subplots(number_of_plots,sharex=True,constrained_layout = True, figsize=(8,10))
 
     fig.suptitle(f'mutation density distribution between {population}-{isolate} and references, with convolution window of {k}')
 
@@ -36,6 +37,7 @@ def plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_fo
         c+=1
         
     fig.savefig(out_folder, bbox_inches='tight')
+    plt.close()
     
 if __name__ == "__main__":
     
@@ -57,12 +59,12 @@ if __name__ == "__main__":
 
             plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder)
 
-            for reference in mismatch_distribution.keys():
-                
-                ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_assembly.fasta'
-                sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
-                out_folder=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/references/{reference}.png'
+    for reference in mismatch_distribution.keys():
+        
+        ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_assembly.fasta'
+        sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
+        out_folder=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/references/{reference}.png'
 
-                mismatch_distribution, mapping = analyse_bam(sam_file, ref_file)
+        mismatch_distribution, mapping = analyse_bam(sam_file, ref_file)
 
-                plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder)
+        plot_mappings(mismatch_distribution, mapping, reference, '', k, out_folder)

@@ -469,4 +469,4 @@ dot plot + similarity between two references (length between snps?)
 map on the assembly
 align with different parameters (read length, snps score) (most reads with no secondary mapping)
 process recombinant reads
-look at secondary mappings
+look deeper at secondary mappings
