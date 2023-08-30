@@ -2,7 +2,6 @@ import pysam
 from Bio import SeqIO
 import numpy as np
 from collections import defaultdict
-import matplotlib.pyplot as plt
 
 def decode_flag(flag):
     if flag==0 or flag==16: return 'primary'
