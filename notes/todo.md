@@ -27,17 +27,22 @@
         between 10 to 20 % of reads are below 500. we can use it as a threshold.
         i did used some bash commands to filter out short reads
         timepoints=("1" "3" "5" "7")
-        for t in "${timepoints[@]}
+        for t in "${timepoints[@]}"
         do
         seqkit seq -m 1000 P2_$t.fastq.gz > P2_$t.fastq
         done
         both for P2 and P3
         then i gzip the files
-        for t in "${timepoints[@]}
+        for t in "${timepoints[@]}"
         do
         gzip P2_$t.fastq
         done
     - [ ] sweep minimap parameters
-        - [ ] asm-5
+        - [x] asm-5
         - [ ] -M
-    
+    - [ ] msa alignment stats
+        - [ ] phage isolates
+            - [ ] msa with mafft
+            - [ ] extract stats
+                - [ ]
+        - [ ] long reads
