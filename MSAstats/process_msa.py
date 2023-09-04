@@ -38,7 +38,7 @@ populations=['P2']
 timepoints=['1']
 for population in populations:
     for timepoint in timepoints:
-        file=f'MSAstats/results/msa/{population}_{timepoint}_0_msa.fasta'
+        file=f'MSAstats/results/msa/{population}/{timepoint}/{population}_{timepoint}_2_msa.fasta'
         #file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/C1msa.fasta'
 
         msa_matrix=read_msa(file)

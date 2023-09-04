@@ -14,6 +14,8 @@
 - [ ] phage populations
     - [x] run evo genome analysis on the three references
     - [ ] run evo genome analysis on the assembled recombinant genomes
+- [ ] look into the results
+    - [ ] secondary mappings in correspondance of the gap
 - [ ] improve the results
     - [x] correct the recombinant assemblies by hand
     - [ ] make dot_plot-mutation_density_between_references-coverage_of_population_on_reference plot in the evo-genome-analysis pipeline
@@ -44,10 +46,12 @@
         - [x] phage isolates
             - [x] msa with mafft
             - [x] extract stats and plot
-        - [x] long reads
+        - [ ] long reads
             - [x] extract long reads
             - [x] msa with mafft
             - [x] plot
+            - [ ] use minimap to check the alignment of long reads
+            - [ ] select the reads by looking at population alignment data
     - [ ] secondary reads alignment stats
         - [ ] take the reads with a secondary mapping from the population alignment
         - [ ] compare the two mappings

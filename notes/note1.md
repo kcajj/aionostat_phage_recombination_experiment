@@ -481,6 +481,8 @@ the dotplot shows that the regions of EM60 genome in population 2 that have spik
 
 now we want to try to get rid of these spikes, our first approach is to try to modify the minimap2 parameters and filter the reads on the basis of their legth:
 
+## trying to tweak minimap parameters
+
 - the minimap parameters have to be modified to allow to have more clips. right now the tool aligns reads for their entire length, inserting a lot of mismatches for the recombinant reads. we want to reach a situation in which the parts of the reads that have a lot of mismatches are not aligned but clipped.
 we tried to use -asm5 option and the number of clips was modified:
 
@@ -489,7 +491,55 @@ this is EM11 in population 2, there are very few clips in correspondence of the 
 
 the problem is that these changes are not enough and they are pretty useless like this. moreover using asm5 increases the number of supplementary and secondary alignment a lot for some reason.
 
-![supplementary_asm5](supplementary_alignments.png) 
-![Alt text](secondary_alignments.png)
+![supplementary_asm5](images/supplementary_alignments_asm5.png) 
+![secondary_asm5](images/secondary_alignments_asm5.png)
 
-- the length filter was done with seqkit, the objective was to avoid the mapping of short reads that are identical between the two genomes (in correspondance of the spikes) i placed the threshold at 1000 (consider that half of the reads have length less than 2500), 
+- the length filter was done with seqkit, the objective was to avoid the mapping of short reads that are identical between the two genomes (in correspondance of the spikes).
+i placed the threshold at 1000 (consider that half of the reads have length less than 2500), but this did not have any beneficial effect on the spikes
+
+![coverage_EM60_length](images/coverage_EM60_length.png)
+
+
+overall the use of asm5 and of the length threshold made the border of the recombinant region more sharp:
+
+![coverage_EM11_asm5](images/coverage_EM11_asm5.png)
+
+
+this approach is not really working, we created an [issue on minimap github page](https://github.com/lh3/minimap2/issues/1112) to see if someone knows how to tweak the parameters better than us. for now we will just change approach
+
+## trying to search for chimeric reads throguh mutation density differences
+
+if changing the behaviour of minimap doesn't work, we will use what minimap is giving us: high number of mutations.
+
+the idea is to use the mutations pattern to recognise when a read is made of two different genomes, we want a precise method.
+
+we will just start by defining the possible evidences, for the sequence of a read, of belonging to a genome or another.
+
+imagine to have a msa between a chimeric read and the two genomes. if we go though each nucleotide, there are 4 possible situations:
+
+1. the nucleotide of the read is different from both refernece nucleotides, in this case we have no information
+
+2. the two reference nucleotides are equal, and the read nucleotide is equal to them, in this case we have no information about the apparteinence of the read to one of the two references.
+
+3. the read nucleotide is equal to the first reference nucleotide but different from the other: this is a clear evidence that this portion of the read belongs to the first reference
+
+4. same thing as 3 but with the second reference
+
+we want to record all these evidences and represent them in a plot.
+
+we start working with a recombinant assembled genome of a phage, we know that its sequence is made of two different genomes. we use mafft on it to make the msa with the two references.
+
+we obtain something like this:
+
+![assembly_msa](images/assembly_msa.png)
+
+without convolution we get a 50bp region in the recombination border
+
+now we want to try with reads, we can take reads from the last populations, selecting for the longest ones. we use mafft and then we analyse the msa.
+
+this is an example from population 2, last timepoint, longest read.
+
+
+
+this may be ok but mafft requires a lot of time to run, i think we will have to rely on minimap.
+

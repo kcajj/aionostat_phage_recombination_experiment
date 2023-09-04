@@ -33,3 +33,8 @@ done
 
 for timepoint 5 and 7
 
+no results, it is too slow
+
+by using minimap we get a shitty alignment
+
+we need another way to select reads and to align them, i think i will use the data of population alignment
