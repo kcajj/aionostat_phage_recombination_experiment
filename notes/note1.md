@@ -470,3 +470,26 @@ map on the assembly
 align with different parameters (read length, snps score) (most reads with no secondary mapping)
 process recombinant reads
 look deeper at secondary mappings
+
+
+i implemented a dotplot in evo-genome-analysis pipeline, for now the script takes manually the inputs and it is inside the pipeline just to start its execution.
+it should be integrated better with the rest of the pipeline.
+
+the dotplot shows that the regions of EM60 genome in population 2 that have spikes are in correspondance of hyper homologous regions.
+
+![dotplot EM60 p3](images/dotplot_EM60_p3.png)
+
+now we want to try to get rid of these spikes, our first approach is to try to modify the minimap2 parameters and filter the reads on the basis of their legth:
+
+- the minimap parameters have to be modified to allow to have more clips. right now the tool aligns reads for their entire length, inserting a lot of mismatches for the recombinant reads. we want to reach a situation in which the parts of the reads that have a lot of mismatches are not aligned but clipped.
+we tried to use -asm5 option and the number of clips was modified:
+
+![clips with asm5](images/n_clips_asm5.png)
+this is EM11 in population 2, there are very few clips in correspondence of the recombination point (near 3000), also there are a lot of clipsnear 4000, maybe there has been some evolution event (not related to recombination)
+
+the problem is that these changes are not enough and they are pretty useless like this. moreover using asm5 increases the number of supplementary and secondary alignment a lot for some reason.
+
+![supplementary_asm5](supplementary_alignments.png) 
+![Alt text](secondary_alignments.png)
+
+- the length filter was done with seqkit, the objective was to avoid the mapping of short reads that are identical between the two genomes (in correspondance of the spikes) i placed the threshold at 1000 (consider that half of the reads have length less than 2500), 

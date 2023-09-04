@@ -8,3 +8,28 @@ command:
 mafft --auto data/P2C1_refs.fasta > results/C1msa.fasta
 
 now we want to load this file in biopython and put the sequences in a numpy matrix
+
+it worked
+
+now we select the reads for the longest
+
+we have the longest read, now we want to put it in a file with the references
+
+now we produce the msa of this file
+
+mafft --auto results/reads/P2_1_0.fasta > results/msa/P2_1_0_msa.fasta
+
+then we process the msa with the script produced before
+
+we need ot select for the reads in the last populations
+
+we will execute the whole thing on 10 reads
+
+reads=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9")
+for read in "${reads[@]}"
+do
+mafft --retree 2 --maxiterate 2 results/reads/P2/5/P2_5_$read.fasta > results/msa/P2/5/P2_5_$read_msa.fasta
+done
+
+for timepoint 5 and 7
+

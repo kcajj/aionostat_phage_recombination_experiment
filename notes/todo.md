@@ -1,7 +1,7 @@
 - [ ] phage isolates
     - [ ] build pipeline
         - [x] assembly
-        - [ ] rename of the assemblies
+        - [ ] rename of the assemblies (i renamed them by hand)
         - [x] map reads on assembly
         - [x] map references on assembly
         - [x] map references on references
@@ -40,9 +40,14 @@
     - [ ] sweep minimap parameters
         - [x] asm-5
         - [ ] -M
-    - [ ] msa alignment stats
-        - [ ] phage isolates
-            - [ ] msa with mafft
-            - [ ] extract stats
-                - [ ]
-        - [ ] long reads
+    - [x] msa alignment stats
+        - [x] phage isolates
+            - [x] msa with mafft
+            - [x] extract stats and plot
+        - [x] long reads
+            - [x] extract long reads
+            - [x] msa with mafft
+            - [x] plot
+    - [ ] secondary reads alignment stats
+        - [ ] take the reads with a secondary mapping from the population alignment
+        - [ ] compare the two mappings
