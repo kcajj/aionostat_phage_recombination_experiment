@@ -42,6 +42,7 @@
     - [ ] sweep minimap parameters
         - [x] asm-5
         - [ ] -M
+        doesn't work
     - [x] msa alignment stats
         - [x] phage isolates
             - [x] msa with mafft
@@ -55,3 +56,4 @@
     - [ ] secondary reads alignment stats
         - [ ] take the reads with a secondary mapping from the population alignment
         - [ ] compare the two mappings
+        doesn't work

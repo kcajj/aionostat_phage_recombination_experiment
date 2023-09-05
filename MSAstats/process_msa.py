@@ -35,11 +35,11 @@ def get_evidences_distributions(msa_matrix):
 #populations=['P2','P3']
 #timepoints=['1','3','5','7']
 populations=['P2']
-timepoints=['1']
+timepoints=['5']
 for population in populations:
     for timepoint in timepoints:
-        file=f'MSAstats/results/msa/{population}/{timepoint}/{population}_{timepoint}_2_msa.fasta'
-        #file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/C1msa.fasta'
+        file=f'MSAstats/results/msa/{population}/{timepoint}/{population}_{timepoint}_3_msa.fasta'
+        #file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/msa/clones/P3_C3_msa.fasta'
 
         msa_matrix=read_msa(file)
         

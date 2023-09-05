@@ -38,3 +38,26 @@ no results, it is too slow
 by using minimap we get a shitty alignment
 
 we need another way to select reads and to align them, i think i will use the data of population alignment
+
+we select reads on the basis of the length of the matching on the reference, we consider the average between primary and secondary mapping.
+
+populations=("P2" "P3")
+timepoints=("1" "3" "5" "7")
+reads=("0" "1" "2" "3" "4")
+for population in "${populations[@]}"
+do
+    for timepoint in "${timepoints[@]}"
+    do
+        for read in "${reads[@]}"
+        do
+        mafft --retree 2 --maxiterate 2 results/seq_for_msa/$population/$timepoint/${population}_${timepoint}_${read}.fasta \
+        > results/msa/$population/$timepoint/${population}_${timepoint}_${read}_msa.fasta
+        done
+    done
+done
+
+by making the reverse complement of the read we can get  the msa of the read.
+
+minimap2 -a data/P2C1_refs.fasta results/longest_reads/P2/5/P2_5_0.fasta > test_alignment_longest_reads_references/5_0_on3refs.sam
+
+we will know if reads are reverse or not from the initial population alignment, if they are reverse mapped we build the msa files with the reverse complement of these sequences

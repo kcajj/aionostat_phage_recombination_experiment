@@ -51,7 +51,7 @@ def get_longest_reads(primary, secondary):
                 longest_matching_reads[primary_query_name]=[(primary_alignment_length+sorted_secondary_alignments[0][2])/2,ref_start1,sorted_secondary_alignments[0][1],ref_name1,sorted_secondary_alignments[0][0]]
 
     sorted_dict=sorted(longest_matching_reads.items(), key=lambda x: x[1][0], reverse=True)
-    sorted_dict=sorted_dict[:1]
+    sorted_dict=sorted_dict[:5] #the third longest read matching in the file has some common matches
     return secondary, sorted_dict
 
 def find_chimeric_reads(bam_file, longest_matching_reads, ref1_seq, ref2_seq):
@@ -82,13 +82,12 @@ def find_chimeric_reads(bam_file, longest_matching_reads, ref1_seq, ref2_seq):
                         break
         if unique_secondary!=1: print('error secondary')
         
-
         iref_1=0
         iref_2=0
         c=0
 
         for read_pos, read_nuc in enumerate(read_seq):
-            
+
             #get the tuple in which the position of the read is pairing
             while alignment1[iref_1][0]!=read_pos:
                 iref_1+=1
@@ -107,10 +106,10 @@ def find_chimeric_reads(bam_file, longest_matching_reads, ref1_seq, ref2_seq):
 
             if ref1_nuc!=None and ref2_nuc!=None:
                 c+=1
-                print(read_pos, read_nuc)
-                print(iref_1, ref1_nuc)
-                print(iref_2, ref2_nuc)
-                print()
+                #print(read_pos, read_nuc)
+                #print(iref_1, ref1_nuc)
+                #print(iref_2, ref2_nuc)
+                #print()
         print(c)
         #for read_pos, read_nuc_2 in enumerate(read_seq2):
         #    while alignment2[i_2][0]!=read_pos:
