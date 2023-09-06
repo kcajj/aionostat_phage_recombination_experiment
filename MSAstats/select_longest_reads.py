@@ -24,7 +24,6 @@ timepoints=['1','3','5','7']
 for population in populations:
     for timepoint in timepoints:
         file=f'MSAstats/data/population_reads/{population}_{timepoint}.fastq.gz'
-        n=2
 
         longest_reads=pd.read_csv(f'/home/giacomocastagnetti/code/rec_genome_analysis/chimeric_reads/longest_matching_reads/{population}/{population}_{timepoint}.csv')
 
