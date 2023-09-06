@@ -66,3 +66,55 @@ for read in "${reads[@]}"
 do
 mafft --retree 2 --maxiterate 2 results/seq_for_msa/P2/7/P2_7_${read}.fasta > results/msa/P2/7/P2_7_${read}_msa.fasta
 done
+
+
+
+
+creating msa of the two references
+mafft --auto results/seq_for_msa/refs.fasta > results/msa/refs_msa.fasta
+
+add each read to it
+
+mafft --auto --addfragments fragments --reorder --thread -1 existing_alignment > output
+
+    Sequences in fragments are ungapped and then aligned to existing_alignment. 
+    fragments is a single multi-FASTA format file.
+    existing_alignment is a single multi-FASTA format file. 
+    Gaps in existing_alignment are preserved, but the alignment length may be changed in the default setting (see example below).
+    If the --keeplength option is given, then the alignment length is unchanged.  Insertions at the fragmentary sequences are deleted. 
+    Add --mapout to see a correspondence table of positions, fragments.map, between before and after the calculation.  The --mapout option automatically turns on the --keeplength option, to keep the numbering of sites in the reference alignment (explanation added, 2016/Aug). 
+    --auto automatically switches algorithm according to data size.  Safer to always use this flag.  (added 2020/Sep)
+    --multipair uses a high-cost (in time and memory usage) option.  Same as default.  Applicable to ∼<30,000 sites × ∼<1,000 sequences.
+    --6merpair uses a low-cost option.
+    Omit --reorder to preserve the original sequence order. 
+    Described in Katoh & Frith 2012
+    Can be used off-label to align closely-related sequences to a reference to build an MSA.
+    Online version 
+
+mafft --auto --addfragments results/longest_reads_seq/P2/7/P2_7_2.fasta --keeplength results/msa/refs_msa.fasta > results/test.fasta
+
+
+
+test in the last timepoint
+
+reads=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15" "16" "17" "18" "19")
+for read in "${reads[@]}"
+do
+mafft --auto --addfragments results/seq_for_msa/P2/7/P2_7_${read}.fasta --keeplength results/msa/refs_msa.fasta > results/msa/P2/7/P2_7_${read}_msa.fasta
+done
+
+total msa production
+populations=("P2" "P3")
+timepoints=("1" "3" "5" "7")
+reads=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9")
+for population in "${populations[@]}"
+do
+    for timepoint in "${timepoints[@]}"
+    do
+        for read in "${reads[@]}"
+        do
+        mafft --retree 2 --maxiterate 2 results/seq_for_msa/$population/$timepoint/${population}_${timepoint}_${read}.fasta \
+        > results/msa/$population/$timepoint/${population}_${timepoint}_${read}_msa.fasta
+        done
+    done
+done

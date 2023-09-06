@@ -3,6 +3,8 @@ import gzip
 import pandas as pd
 
 def get_longest_seq(path, longest_reads, n):
+    #get the read sequences from the fastq.
+    #very slow, it checks the whole file for each read, can be easily sped up
     l=[]
     c=0
     for row in longest_reads.iterrows():
@@ -19,8 +21,8 @@ def get_longest_seq(path, longest_reads, n):
         
     return l
 
-populations=['P2']
-timepoints=['7']
+populations=['P2','P3']
+timepoints=['1','3','5','7']
 for population in populations:
     for timepoint in timepoints:
         file=f'MSAstats/data/population_reads/{population}_{timepoint}.fastq.gz'
@@ -36,7 +38,3 @@ for population in populations:
         for i_r,read in enumerate(longest):
             out_file=open(f'MSAstats/results/seq_for_msa/{population}/{timepoint}/{population}_{timepoint}_{i_r}.fasta','w')
             out_file.write('>'+read[0]+'\n'+read[1]+'\n')
-            ref1=SeqIO.read(ref1_file, 'fasta')
-            out_file.write('>'+ref1.id+'\n'+str(ref1.seq)+'\n')
-            ref2=SeqIO.read(ref2_file, 'fasta')
-            out_file.write('>'+ref2.id+'\n'+str(ref2.seq)+'\n')

@@ -18,9 +18,9 @@ def get_evidences_distributions(msa_matrix):
     second_e_distribution=np.zeros(l)
 
     for pos,array in enumerate(msa_matrix[0]):
-        nuc_assembly=msa_matrix[0,pos]
-        nuc_first_ref=msa_matrix[1,pos]
-        nuc_second_ref=msa_matrix[2,pos]
+        nuc_assembly=msa_matrix[2,pos]
+        nuc_first_ref=msa_matrix[0,pos]
+        nuc_second_ref=msa_matrix[1,pos]
         #print(nuc_assembly, nuc_first_ref, nuc_second_ref)
         if nuc_assembly!='-' and nuc_first_ref!='-' and nuc_second_ref!='-':
             if (nuc_assembly!=nuc_first_ref and nuc_assembly!=nuc_second_ref) or (nuc_assembly==nuc_first_ref and nuc_assembly==nuc_second_ref):
@@ -35,10 +35,10 @@ def get_evidences_distributions(msa_matrix):
 #populations=['P2','P3']
 #timepoints=['1','3','5','7']
 #reads=['0','1','2','3','4']
-populations=['P2']
-timepoints=['7']
-#reads=['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19']
-reads=[0]
+populations=['P2','P3']
+timepoints=['1','3','5','7']
+reads=['0','1','2','3','4','5','6','7','8','9','10']
+#reads=[0]
 for population in populations:
     for timepoint in timepoints:
         for read in reads:

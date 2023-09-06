@@ -615,9 +615,10 @@ this may be ok but mafft requires a lot of time to run, we have to find another 
 
 # what next?
 
-- make the analysis of reads quicker (align each fragment to the msa of the two references) (https://mafft.cbrc.jp/alignment/server/add_fragments.html)
+- make the analysis of reads quicker (align each fragment to the msa of the two references, keep length) (https://mafft.cbrc.jp/alignment/server/add_fragments.html) (clustalw,)
 - implement a way to represent the fraction of recombination event in a certain point with respect to the non recombinant reads
 - run on the whole dataset
 
 - map population data on the recombinant assembly
 - look deeper at evolution of phages in the dataset.
+- normalise for expected values in evidence distribution
