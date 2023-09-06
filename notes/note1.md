@@ -579,41 +579,45 @@ we will just analyse the clones of population 2 since they are the only recombin
 
 C1:
 
-![assembly_msa](images/assembly_msa.png)
+![assembly_msa](/results/plots/recombination_evidences/clones/C1.png)
 
 C2:
 
-
+![assembly_msa](/results/plots/recombination_evidences/clones/C2.png)
 
 C3:
 
-
+![assembly_msa](/results/plots/recombination_evidences/clones/C3.png)
 
 C4:
 
+![assembly_msa](/results/plots/recombination_evidences/clones/C4.png)
 
+on these graphs we can inspect the recombination border with a smaller convolution window.
 
-put also the pictures of the other clones, we are searching for evidences in all of them
+![closeup_recombination_region](images/recombination_region_closeup.png)
 
+we have a range of 50 bp in which the recombination has happened.
 
-without convolution we get a 50bp region in the recombination border
+we can also inspect the region in clone 3 that shows a peak in EM60 evidences.
 
+![second_recombination_event](images/second_possible_recombination_event.png)
 
-now we want to try with reads, we can take reads from the last populations, selecting for the longest ones. we use mafft and then we analyse the msa.
+### measuring recombination in the population of reads
 
-this is an example from population 2, last timepoint, longest read.
+now we want to try with reads, we can take reads from the last populations, selecting for the best matching ones. we use mafft and then we analyse the msa.
 
-no output
+we go throught the bam file and get the names of the reads that have the longest mapping length (average between primary and secondary mapping).
 
-this may be ok but mafft requires a lot of time to run, i think we will have to rely on minimap.
+results in the folder.
 
-probably the longest reads do not have a good mapping, we can try to test this
-
+this may be ok but mafft requires a lot of time to run, we have to find another way.
 
 # what next?
 
-- make the analysis of reads quicker (align each fragment to the msa of the two references)
+- make the analysis of reads quicker (align each fragment to the msa of the two references) (https://mafft.cbrc.jp/alignment/server/add_fragments.html)
 - implement a way to represent the fraction of recombination event in a certain point with respect to the non recombinant reads
+- run on the whole dataset
 
 - map population data on the recombinant assembly
 - look deeper at evolution of phages in the dataset.

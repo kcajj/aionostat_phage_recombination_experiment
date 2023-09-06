@@ -6,3 +6,4 @@ __pycache__
 .obsidian
 results_evo_genome_analysis
 Msastat/data
+chimeric_reads

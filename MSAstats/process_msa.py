@@ -34,15 +34,20 @@ def get_evidences_distributions(msa_matrix):
 
 #populations=['P2','P3']
 #timepoints=['1','3','5','7']
+#reads=['0','1','2','3','4']
 populations=['P2']
 timepoints=['7']
-reads=['0','1','2','3','4','5','6','7','8','9','10','11']
+#reads=['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19']
+reads=[0]
 for population in populations:
     for timepoint in timepoints:
         for read in reads:
             file=f'MSAstats/results/msa/{population}/{timepoint}/{population}_{timepoint}_{read}_msa.fasta'
-            #file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/msa/clones/P3_C3_msa.fasta'
-
+            #file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/msa/clones/P2_C4_msa.fasta'
+            references=['EM11','EM60']
+            out_folder=f'results/plots/recombination_evidences/reads/{population}/{timepoint}/{population}_{timepoint}_{read}.png'
+            #out_folder=f'results/plots/recombination_evidences/clones/C4.png'
+            
             msa_matrix=read_msa(file)
             
             first_e_distribution, second_e_distribution = get_evidences_distributions(msa_matrix)
@@ -52,9 +57,10 @@ for population in populations:
             second_to_plot=np.convolve(second_e_distribution, np.ones(k))/k
             x=np.linspace(0,len(first_to_plot),len(first_to_plot))
             plt.title('distribution of evidences')
-            plt.plot(x, first_to_plot,label='EM11')
-            plt.plot(x, second_to_plot, label='EM60')
+            plt.plot(x, first_to_plot,label=references[0])
+            plt.plot(x, second_to_plot, label=references[1])
             plt.xlabel('bp')
             plt.ylabel('evidence score')
             plt.legend()
-            plt.show()
+            plt.savefig(out_folder, bbox_inches='tight')
+            plt.close()
