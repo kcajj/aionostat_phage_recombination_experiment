@@ -19,15 +19,15 @@ def get_longest_seq(path, longest_reads, n):
         
     return l
 
-populations=['P2','P3']
-timepoints=['1','3','5','7']
+populations=['P2']
+timepoints=['7']
 for population in populations:
     for timepoint in timepoints:
         file=f'MSAstats/data/population_reads/{population}_{timepoint}.fastq.gz'
 
         longest_reads=pd.read_csv(f'/home/giacomocastagnetti/code/rec_genome_analysis/chimeric_reads/longest_matching_reads/{population}/{population}_{timepoint}.csv')
 
-        n=5
+        n=20
         longest=get_longest_seq(file, longest_reads, n)
 
         ref1_file='MSAstats/data/references/EM11_assembly.fasta'

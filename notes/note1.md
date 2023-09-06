@@ -30,19 +30,19 @@ the results that we obtained are striking!
 
 clone-1: this clone shows the perfect characteristics of recombination
 
-![c1](/results/plots/P2/C1.png)
+![c1](images/old_clone_recombinant_assemblies/P2/C1.png)
 
 clone-2:
 
-![c2](/results/plots/P2/C2.png)
+![c2](images/old_clone_recombinant_assemblies/P2/C2.png)
 
 clone-3: this is a good recombinant but at base 110 000, shows a high distance from EM11.
 
-![c3](/results/plots/P2/C3.png)
+![c3](images/old_clone_recombinant_assemblies/P2/C3.png)
 
 clone-4:
 
-![c4](/results/plots/P2/C4.png)
+![c4](images/old_clone_recombinant_assemblies/P2/C4.png)
 
 the first thing that we notice is that c1,3 are similar between each other and different from c2,4. possibly, the formers represent recombined genomes correctly assembled while the latters have some contaminant DNA that coused some strange behaviour.
 
@@ -75,19 +75,19 @@ in this case the borders of the genome are fine
 
 clone-1:
 
-![c1](/results/plots/P3/C1.png)
+![c1](images/old_clone_recombinant_assemblies/P3/C1.png)
 
 clone-2:
 
-![c2](/results/plots/P3/C2.png)
+![c2](images/old_clone_recombinant_assemblies/P3/C2.png)
 
 clone-3:
 
-![c3](/results/plots/P3/C3.png)
+![c3](images/old_clone_recombinant_assemblies/P3/C3.png)
 
 clone-4:
 
-![c4](/results/plots/P3/C4.png)
+![c4](images/old_clone_recombinant_assemblies/P3/C4.png)
 
 population 3 doesn't seem to show any recombination or strange behaviours.
 
@@ -457,89 +457,163 @@ there is no signal suggesting something about genome recombination.
 - the coverage data suggests that there could be some amount of recombinant phages. that's the strongest evidence that we have.
     they are less with respect to the first population maybe because of the initial missproportion between EM11 and EM60
 
+# going more in depth
 
+## phage clone assemblies
 
+we can clean each assembly, keeping only the non contaminated part and putting them all in the right direction, this is the result:
 
+![EM60_coverage](images/P3/EM60_coverage.png)
 
-how to quantify all this?
+## population 2
 
-polish clone assemblies
-dot plot + similarity between two references (length between snps?)
+clone-1:
 
-map on the assembly
-align with different parameters (read length, snps score) (most reads with no secondary mapping)
-process recombinant reads
-look deeper at secondary mappings
+![c1](/results/plots/P2/C1.png)
 
+clone-2:
 
-i implemented a dotplot in evo-genome-analysis pipeline, for now the script takes manually the inputs and it is inside the pipeline just to start its execution.
-it should be integrated better with the rest of the pipeline.
+![c2](/results/plots/P2/C2.png)
+
+clone-3:
+
+![c3](/results/plots/P2/C3.png)
+
+clone-4:
+
+![c4](/results/plots/P2/C4.png)
+
+## population 3
+
+clone-1:
+
+![c1](/results/plots/P3/C1.png)
+
+clone-2:
+
+![c2](/results/plots/P3/C2.png)
+
+clone-3:
+
+![c3](/results/plots/P3/C3.png)
+
+clone-4:
+
+![c4](/results/plots/P3/C4.png)
+
+## spikes in population data
+
+in the coverage plots of EM60 there were some strange spikes, especially in population 3. we want to investigate them to see if they are misalignments and distinguish them from the recombination signal
+
+![EM60_coverage](images/P3/EM60_coverage.png)
+
+### what are they?
+
+the first suspect that we had when we saw those spikes was that they are highly homologous regions between the two genomes, and in these regions the aligner does not know where to map the reads.
+
+to check for this we can construct a dotplot to search for hyper similarities. I implemented a dotplot in evo-genome-analysis pipeline, for now the script takes manually the inputs (i only gave the inputs to make the EM60 dotplots, since they are the most interesting ones). it is inside the pipeline just to launch it. it should be integrated better with the rest of the pipeline.
 
 the dotplot shows that the regions of EM60 genome in population 2 that have spikes are in correspondance of hyper homologous regions.
 
-![dotplot EM60 p3](images/dotplot_EM60_p3.png)
+EM60 P3:
 
-now we want to try to get rid of these spikes, our first approach is to try to modify the minimap2 parameters and filter the reads on the basis of their legth:
+![dotplot_EM60_P3](images/dotplot_EM60_P3.png)
 
-## trying to tweak minimap parameters
+EM60 P2:
 
-- the minimap parameters have to be modified to allow to have more clips. right now the tool aligns reads for their entire length, inserting a lot of mismatches for the recombinant reads. we want to reach a situation in which the parts of the reads that have a lot of mismatches are not aligned but clipped.
+![dotplot_EM60_P2](images/dotplot_EM60_P2.png)
+
+### how to get rid of them?
+
+now we want to try to get rid of these spikes, they are caused by misalignments and they interfere with our observations on the dataset. at the same time we would like our dataset to be more suitable to study recombination, that is to say that we would like that the recombinant reads are not aligned for their whole length on one genome. they should be aligned only in the region with low mutation density, while the other region is clipped and it has a supplementary mapping in correspondence of the other genome.
+
+to achieve this we can try to modify the minimap2 parameters and filter out short reads to avoid mapping them on hyper homologous regions.
+
+1. the minimap parameters have to be modified to allow to have more clips. right now the tool aligns reads for their entire length, inserting a lot of mismatches for the recombinant reads. we want to reach a situation in which the parts of the reads that have a lot of mismatches are not aligned but clipped.
 we tried to use -asm5 option and the number of clips was modified:
 
-![clips with asm5](images/n_clips_asm5.png)
-this is EM11 in population 2, there are very few clips in correspondence of the recombination point (near 3000), also there are a lot of clipsnear 4000, maybe there has been some evolution event (not related to recombination)
+    EM11 P2:
 
-the problem is that these changes are not enough and they are pretty useless like this. moreover using asm5 increases the number of supplementary and secondary alignment a lot for some reason.
+    ![clips with asm5](images/n_clips_asm5.png)
 
-![supplementary_asm5](images/supplementary_alignments_asm5.png) 
-![secondary_asm5](images/secondary_alignments_asm5.png)
+    there are very few clips in correspondence of the recombination point (near 3000), but still they are more than in the original plot. (also there are a lot of clipsnear 4000, maybe there has been some evolution event (not related to recombination))
 
-- the length filter was done with seqkit, the objective was to avoid the mapping of short reads that are identical between the two genomes (in correspondance of the spikes).
-i placed the threshold at 1000 (consider that half of the reads have length less than 2500), but this did not have any beneficial effect on the spikes
+    the use of asm5 made the border of the recombinant region more sharp:
 
-![coverage_EM60_length](images/coverage_EM60_length.png)
+    ![coverage_EM11_asm5](images/coverage_EM11_asm5.png)
 
+    overall there are not significant improvements. moreover, using asm5 increases the number of supplementary and secondary alignment a lot for some reason.
 
-overall the use of asm5 and of the length threshold made the border of the recombinant region more sharp:
+    ![supplementary_asm5](images/supplementary_alignments_asm5.png) 
+    ![secondary_asm5](images/secondary_alignments_asm5.png)
 
-![coverage_EM11_asm5](images/coverage_EM11_asm5.png)
+2. the length filter was done with seqkit, the objective was to avoid the mapping of short reads that are identical between the two genomes (in correspondance of the spikes). I placed the threshold at 1000 (consider that half of the reads have length less than 2500), but this did not have any beneficial effect on the spikes
 
+    ![coverage_EM60_length](images/coverage_EM60_length.png)
 
-this approach is not really working, we created an [issue on minimap github page](https://github.com/lh3/minimap2/issues/1112) to see if someone knows how to tweak the parameters better than us. for now we will just change approach
+this approach is not really working, we created an [issue on minimap github page](https://github.com/lh3/minimap2/issues/1112) to see if someone knows how to tweak the parameters better than us.
 
-## trying to search for chimeric reads throguh mutation density differences
+## a more precise quantification of recombination
 
-if changing the behaviour of minimap doesn't work, we will use what minimap is giving us: high number of mutations.
+since we did not manage to get a dataset that is more suitable to study recombination, we will proceed with what we have. we will use what minimap is giving us: the recombinant regions have a different coverage and a high mutation density.
 
 the idea is to use the mutations pattern to recognise when a read is made of two different genomes, we want a precise method.
 
-we will just start by defining the possible evidences, for the sequence of a read, of belonging to a genome or another.
-
-imagine to have a msa between a chimeric read and the two genomes. if we go though each nucleotide, there are 4 possible situations:
+we will just start by defining the possible evidences, for the sequence of a read, to belong to a genome or another. imagine to have a msa between a chimeric read and the two genomes. if we go though each nucleotide (considering 3 nucleotides), there are 4 possible situations (we will just consider the position where all 3 sequences align):
 
 1. the nucleotide of the read is different from both refernece nucleotides, in this case we have no information
 
 2. the two reference nucleotides are equal, and the read nucleotide is equal to them, in this case we have no information about the apparteinence of the read to one of the two references.
 
-3. the read nucleotide is equal to the first reference nucleotide but different from the other: this is a clear evidence that this portion of the read belongs to the first reference
+3. the read nucleotide is equal to the first reference nucleotide but different from the second: this is a clear evidence that this portion of the read belongs to the first reference
 
-4. same thing as 3 but with the second reference
+4. the read nucleotide is equal to the second reference nucleotide but different from the first: this is a clear evidence that this portion of the read belongs to the second reference.
 
 we want to record all these evidences and represent them in a plot.
 
-we start working with a recombinant assembled genome of a phage, we know that its sequence is made of two different genomes. we use mafft on it to make the msa with the two references.
+### finding evidences in clone assemblies
 
-we obtain something like this:
+we start working with the recombinant clones that we assembled, it will be our positive control. we use mafft to make the msa between the assembly and the two references.
+
+we will just analyse the clones of population 2 since they are the only recombinant ones. by plotting the distribution of the evidences we get something like this:
+
+C1:
 
 ![assembly_msa](images/assembly_msa.png)
 
+C2:
+
+
+
+C3:
+
+
+
+C4:
+
+
+
+put also the pictures of the other clones, we are searching for evidences in all of them
+
+
 without convolution we get a 50bp region in the recombination border
+
 
 now we want to try with reads, we can take reads from the last populations, selecting for the longest ones. we use mafft and then we analyse the msa.
 
 this is an example from population 2, last timepoint, longest read.
 
-
+no output
 
 this may be ok but mafft requires a lot of time to run, i think we will have to rely on minimap.
 
+probably the longest reads do not have a good mapping, we can try to test this
+
+
+# what next?
+
+- make the analysis of reads quicker (align each fragment to the msa of the two references)
+- implement a way to represent the fraction of recombination event in a certain point with respect to the non recombinant reads
+
+- map population data on the recombinant assembly
+- look deeper at evolution of phages in the dataset.

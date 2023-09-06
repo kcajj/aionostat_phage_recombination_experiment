@@ -25,11 +25,7 @@ we need ot select for the reads in the last populations
 
 we will execute the whole thing on 10 reads
 
-reads=("0" "1" "2" "3" "4" "5" "6" "7" "8" "9")
-for read in "${reads[@]}"
-do
-mafft --retree 2 --maxiterate 2 results/reads/P2/5/P2_5_$read.fasta > results/msa/P2/5/P2_5_$read_msa.fasta
-done
+mafft --retree 2 --maxiterate 2 results/reads/P2/5/P2_5_0.fasta > results/msa/P2/5/P2_5_0_msa.fasta
 
 for timepoint 5 and 7
 
@@ -61,3 +57,12 @@ by making the reverse complement of the read we can get  the msa of the read.
 minimap2 -a data/P2C1_refs.fasta results/longest_reads/P2/5/P2_5_0.fasta > test_alignment_longest_reads_references/5_0_on3refs.sam
 
 we will know if reads are reverse or not from the initial population alignment, if they are reverse mapped we build the msa files with the reverse complement of these sequences
+
+
+let's go deeper in last timepoint
+
+reads=("5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15" "16" "17" "18" "19")
+for read in "${reads[@]}"
+do
+mafft --retree 2 --maxiterate 2 results/seq_for_msa/P2/7/P2_7_${read}.fasta > results/msa/P2/7/P2_7_${read}_msa.fasta
+done
