@@ -19,7 +19,9 @@ def get_longest_seq(path, longest_reads, n):
                     output[reads[record.id][0]]=[record.id, str(record.seq.reverse_complement())]
                 else:
                     output[reads[record.id][0]]=[record.id, str(record.seq)]
-                if c==n: break #to speed up the code
+                if c==n:
+                    break #to speed up the code
+
     return output
 
 populations=['P2','P3']
@@ -28,16 +30,13 @@ for population in populations:
     for timepoint in timepoints:
         file=f'MSAstats/data/population_reads/{population}_{timepoint}.fastq.gz'
 
-        longest_reads=pd.read_csv(f'/home/giacomocastagnetti/code/rec_genome_analysis/chimeric_reads/longest_matching_reads/{population}/{population}_{timepoint}.csv')
+        longest_reads=pd.read_csv(f'MSAstats/results/longest_matching_reads/{population}/{population}_{timepoint}.csv')
 
         n=1000
         longest=get_longest_seq(file, longest_reads, n)
-
-        ref1_file='MSAstats/data/references/EM11_assembly.fasta'
-        ref2_file='MSAstats/data/references/EM60_assembly.fasta'
 
         for i_r,read in enumerate(longest):
             out_file=open(f'MSAstats/results/seq_for_msa/{population}/{timepoint}/{population}_{timepoint}_{i_r}.fasta','w')
             out_file.write('>'+read[0]+'\n'+read[1]+'\n')
         
-        print(f'saved reads for {population}, {timepoint}')
+        print(f'saved {n} reads for {population}, {timepoint}')

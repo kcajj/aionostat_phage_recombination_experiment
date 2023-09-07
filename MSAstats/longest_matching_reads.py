@@ -59,6 +59,9 @@ if __name__ == "__main__":
 
     for population in populations:
         for timepoint in timepoints:
+            
+            print(f'selecting the best reads from {population} {timepoint}')
+
             bam_file_path = f'MSAstats/data/population_alignments/{population}/{population}_{timepoint}.bam'
 
             primary_positions, secondary_positions = find_reads_with_secondary_mapping(bam_file_path)

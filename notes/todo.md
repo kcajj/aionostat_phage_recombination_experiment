@@ -24,6 +24,7 @@
         - [x] copy the code to plot the mutation density between references
         - [x] plot the three plots on on top of the other
         - [ ] insert this plot in the pipeline
+        - [ ] correct the title of the dotplot
     - [x] look at reads stats, filter reads by length
         more or less half of the reads are above 2500
         between 10 to 20 % of reads are below 500. we can use it as a threshold.

@@ -104,13 +104,14 @@ mafft --auto --addfragments results/seq_for_msa/P2/7/P2_7_${read}.fasta --keeple
 done
 
 total msa production
+
 populations=("P2" "P3")
 timepoints=("1" "3" "5" "7")
 for population in "${populations[@]}"
 do
     for timepoint in "${timepoints[@]}"
     do
-        for read in {0..99}
+        for read in {0..999}
         do
         mafft --auto --addfragments results/seq_for_msa/${population}/${timepoint}/${population}_${timepoint}_${read}.fasta --keeplength results/msa/refs_msa.fasta \
         > results/msa/${population}/${timepoint}/${population}_${timepoint}_${read}_msa.fasta
