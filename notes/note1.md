@@ -622,3 +622,6 @@ this may be ok but mafft requires a lot of time to run, we have to find another 
 - map population data on the recombinant assembly
 - look deeper at evolution of phages in the dataset.
 - normalise for expected values in evidence distribution
+
+
+# another approach can be tried: splitting reads before and then mapping them
