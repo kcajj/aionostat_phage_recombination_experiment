@@ -34,21 +34,21 @@ def get_evidences_distributions(msa_matrix):
 
     return first_e_distribution, second_e_distribution, all_changes
 
-file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/msa/clones/P2_C1_msa.fasta'
+file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/msa/clones/P2_C4_msa.fasta'
 references=['EM11','EM60']
-out_folder=f'results/plots/recombination_evidences/clones/C1.png'
+out_folder=f'results/plots/recombination_evidences/clones/C4.png'
 
 msa_matrix=read_msa(file)
 
 first_e_distribution, second_e_distribution, all_changes = get_evidences_distributions(msa_matrix)
 
-k=1000
-first_to_plot=np.convolve(first_e_distribution, np.ones(k), mode='same')
-second_to_plot=np.convolve(second_e_distribution, np.ones(k), mode='same')
-normaliser=np.convolve(all_changes, np.ones(k), mode='same')
+k=50
+first_convoluted=np.convolve(first_e_distribution, np.ones(k), mode='same')
+second_convoluted=np.convolve(second_e_distribution, np.ones(k), mode='same')
+normaliser_convoluted=np.convolve(all_changes, np.ones(k), mode='same')
 
-first_normalised=np.divide(first_to_plot,normaliser,out=np.zeros_like(first_to_plot), where=normaliser!=0)
-second_normalised=np.divide(second_to_plot,normaliser,out=np.zeros_like(second_to_plot), where=normaliser!=0)
+first_normalised=np.divide(first_convoluted,normaliser_convoluted,out=np.zeros_like(first_convoluted), where=normaliser_convoluted!=0)
+second_normalised=np.divide(second_convoluted,normaliser_convoluted,out=np.zeros_like(second_convoluted), where=normaliser_convoluted!=0)
 
 x=np.linspace(0,len(first_normalised),len(second_normalised))
 plt.title('distribution of evidences')
@@ -56,6 +56,7 @@ plt.plot(x, first_normalised,label=references[0])
 plt.plot(x, second_normalised, label=references[1])
 plt.xlabel('bp')
 plt.ylabel('evidence score')
+plt.xlim([28000, 28600])
 plt.legend()
 plt.savefig(out_folder, bbox_inches='tight')
 plt.close()

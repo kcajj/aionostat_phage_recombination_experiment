@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
             primary_positions, secondary_positions = clean_secondary(primary_positions, secondary_positions)
 
-            n=100
+            n=1000
             secondary_positions, longest_matching_reads = get_longest_reads(primary_positions, secondary_positions, n)
 
             d=[]

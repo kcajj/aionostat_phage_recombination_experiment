@@ -1,5 +1,5 @@
 data
-/results
+results
 .snakemake
 log
 __pycache__
@@ -7,4 +7,4 @@ __pycache__
 results_evo_genome_analysis
 MSAstat/data
 chimeric_reads
-/MSAstats/results
+MSAstats/results

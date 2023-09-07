@@ -30,7 +30,7 @@ for population in populations:
 
         longest_reads=pd.read_csv(f'/home/giacomocastagnetti/code/rec_genome_analysis/chimeric_reads/longest_matching_reads/{population}/{population}_{timepoint}.csv')
 
-        n=100
+        n=1000
         longest=get_longest_seq(file, longest_reads, n)
 
         ref1_file='MSAstats/data/references/EM11_assembly.fasta'
