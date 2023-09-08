@@ -1,0 +1,4 @@
+Edge	0	3	2	0	0	0	2337	-1
+	Sequence	+edge_1_0_+disjointig_1_0_130912 130912 1 130913 0 130912
+Edge	1	1	0	0	0	0	2337	-1
+	Sequence	-edge_1_0_+disjointig_1_0_130912 130912 -1 130913 0 130912

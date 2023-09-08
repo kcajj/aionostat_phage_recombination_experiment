@@ -1,0 +1,4 @@
+Edge	0	3	2	0	0	0	548	-1
+	Sequence	+edge_1_0_+disjointig_1_0_132556 132556 1 132557 0 132556
+Edge	1	1	0	0	0	0	548	-1
+	Sequence	-edge_1_0_+disjointig_1_0_132556 132556 -1 132557 0 132556

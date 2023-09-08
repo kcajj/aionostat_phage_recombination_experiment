@@ -1,5 +1,6 @@
 data
-results
+/results/mappings
+/results/mappings
 .snakemake
 log
 __pycache__

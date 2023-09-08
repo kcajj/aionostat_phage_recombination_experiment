@@ -1,0 +1,4 @@
+Edge	0	3	2	0	0	0	817	-1
+	Sequence	+edge_1_0_+disjointig_1_0_141082 141082 1 141083 0 141082
+Edge	1	1	0	0	0	0	817	-1
+	Sequence	-edge_1_0_+disjointig_1_0_141082 141082 -1 141083 0 141082
