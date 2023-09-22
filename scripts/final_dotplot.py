@@ -2,6 +2,14 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from Bio import SeqIO
 
+'''
+
+a similar version of this script was integrated in the evo-genome-analysis pipeline
+to create a dotplot together with the coverage data of the mapping data
+
+this is just a script to test the code
+
+'''
 def extract_seq(path):
     return SeqIO.read(path, 'fasta').seq
 

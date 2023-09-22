@@ -463,8 +463,6 @@ there is no signal suggesting something about genome recombination.
 
 we can clean each assembly, keeping only the non contaminated part and putting them all in the right direction, this is the result:
 
-![EM60_coverage](images/P3/EM60_coverage.png)
-
 ## population 2
 
 clone-1:
@@ -579,19 +577,19 @@ we will just analyse the clones of population 2 since they are the only recombin
 
 C1:
 
-![assembly_msa](/results/plots/recombination_evidences/clones/C1.png)
+![assembly_msa](/results/plots/recombination_evidences/clones/P2_C1_non_normalised_msa.png)
 
 C2:
 
-![assembly_msa](/results/plots/recombination_evidences/clones/C2.png)
+![assembly_msa](/results/plots/recombination_evidences/clones/P2_C2_non_normalised_msa.png)
 
 C3:
 
-![assembly_msa](/results/plots/recombination_evidences/clones/C3.png)
+![assembly_msa](/results/plots/recombination_evidences/clones/P2_C3_non_normalised_msa.png)
 
 C4:
 
-![assembly_msa](/results/plots/recombination_evidences/clones/C4.png)
+![assembly_msa](/results/plots/recombination_evidences/clones/P2_C4_non_normalised_msa.png)
 
 on these graphs we can inspect the recombination border with a smaller convolution window.
 
@@ -624,4 +622,4 @@ this may be ok but mafft requires a lot of time to run, we have to find another 
 - normalise for expected values in evidence distribution
 
 
-# another approach can be tried: splitting reads before and then mapping them
+## another approach can be tried: splitting the reads before and then mapping them to the pool of reference genome, if part of a read is mapped on a genome and another part on another genome, we suppose that the read is recombinant.

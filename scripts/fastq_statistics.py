@@ -3,6 +3,12 @@ from Bio import SeqIO,bgzf
 import numpy as np
 import matplotlib.pyplot as plt
 
+'''
+
+this script gives some statistics on the fastq files of the nanopore run,
+it is not important for the recombination analysis
+
+'''
 len_dict={}
 
 lens=[]
@@ -16,6 +22,7 @@ clones=['C1','C2','C3','C4']
 
 for population in populations:
     for clone in clones:
+
         '''
         path_in = f"./data/nanopore/{population}_{clone}.fastq.gz"
         path_out = f"./data/nanopore_length_threshold/{population}_{clone}.fastq.gz"
