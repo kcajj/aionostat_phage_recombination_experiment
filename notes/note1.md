@@ -603,23 +603,44 @@ we can also inspect the region in clone 3 that shows a peak in EM60 evidences.
 
 ### measuring recombination in the population of reads
 
-now we want to try with reads, we can take reads from the last populations, selecting for the best matching ones. we use mafft and then we analyse the msa.
+now we want to try with reads, we can take reads from the last populations, because they should be the ones that show highest recombination. We select for the ones that have the longest matching length. We use mafft and then we analyse the msa.
 
-we go throught the bam file and get the names of the reads that have the longest mapping length (average between primary and secondary mapping).
+The longest reads are selected through the [longest_matching_reads.py](/MSAstats/longest_matching_reads.py) script, and their names are listed in csv files saved in MSAstat/results/longest_matching_reads.
 
-results in the folder.
+Then the script [save_longest_reads.py](/MSAstats/save_longest_reads.py) takes the sequence of the best matchinhg reads from the fastq files and saves it in a single fasta file, stored in MSAstats/seq_for_msa folder.
 
-this may be ok but mafft requires a lot of time to run, we have to find another way.
+At this point, using mafft from the terminal we can map the sequence of the read onto the MSA of the two references. The command is the following:
+
+<pre>
+#creating msa of the two references
+mafft --auto results/seq_for_msa/refs.fasta > results/msa/refs_msa.fasta
+
+#adding the read sequence
+mafft --auto --addfragments results/longest_reads_seq/read_seq.fasta --keeplength results/msa/refs_msa.fasta > results/test.fasta
+</pre>
+
+you can find all the bash commands that I used in [bash_commands_used.txt](/MSAstats/bash_commands_used.txt)
+
+By creating the evidence plot of single reads we managed to find some recombinant ones:
+
+![one_read_evidence](images/one_read_evidence.png)
+
+Then we tried to create a plot that summarises the evidence information of multiple reads, I analysed and summarised the information of the first 1000 best matching reads and the plot we obtain (for population 2 at last timestep) is the following:
+
+![reads_evidences](/results\plots\recombination_evidences\reads\P2\P2_7_non_normalised.png)
+
+Of course this graph is not normalised and the score depends on how many reads we have that show an evidence in each point. We can create the normalised version, but in the regions where we cannot have evidences, and in the regions where we have few reads, the plot is very noisy.
+
+![reads_evidences_normalised](/results\plots\recombination_evidences\reads\P2\P2_7.png)
+
+As you can see we have information only on the central part of the DNA, seems that our way of selecting reads is biased. Maybe the longest matching reads are mainly the ones that map at the centre, for this reason we have difficulties in getting information on the sides.
 
 # what next?
 
-- make the analysis of reads quicker (align each fragment to the msa of the two references, keep length) (https://mafft.cbrc.jp/alignment/server/add_fragments.html) (clustalw,)
-- implement a way to represent the fraction of recombination event in a certain point with respect to the non recombinant reads
-- run on the whole dataset
+- implement a weighted sampling on the basis both on the matching length of the read and on the amount of information that we have along the genome (less information = more probability of selecting the read)
 
 - map population data on the recombinant assembly
 - look deeper at evolution of phages in the dataset.
 - normalise for expected values in evidence distribution
-
 
 ## another approach can be tried: splitting the reads before and then mapping them to the pool of reference genome, if part of a read is mapped on a genome and another part on another genome, we suppose that the read is recombinant.
