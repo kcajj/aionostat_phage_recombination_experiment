@@ -164,10 +164,8 @@ It is clear that also in this small region we are having some recombination.
 
 ### measuring recombination in the population of reads
 
-now we want to try with reads, we can take reads from the last populations, selecting for the best matching ones. we use mafft and then we analyse the msa.
+We want to take reads from the populations of the last day, they should be the ones that show more recombination. We select the reads with the longer matching length.
 
-we go throught the bam file and get the names of the reads that have the longest mapping length (average between primary and secondary mapping).
+we found some single reads that are recombinant
 
-results in the folder.
 
-this may be ok but mafft requires a lot of time to run, we have to find another way.
