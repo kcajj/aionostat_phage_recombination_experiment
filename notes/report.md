@@ -174,11 +174,11 @@ By creating the evidence plot of single reads we managed to find some recombinan
 
 Then we tried to create a plot that summarises the evidence information of multiple reads, I analysed and summarised the information of the first 1000 best matching reads and the plot we obtain (for population 2 at last timestep) is the following:
 
-![reads_evidences](/results\plots\recombination_evidences\reads\P2\P2_7_non_normalised.png)
+![reads_evidences](/results/plots/recombination_evidences/reads/P2/P2_7_non_normalised.png)
 
 Of course this graph is not normalised and the score depends on how many reads we have that show an evidence in each point. We can create the normalised version, but in the regions where we cannot have evidences, and in the regions where we have few reads, the plot is very noisy.
 
-![reads_evidences_normalised](/results\plots\recombination_evidences\reads\P2\P2_7.png)
+![reads_evidences_normalised](/results/plots/recombination_evidences/reads/P2/P2_7.png)
 
 As you can see we have information only on the central part of the DNA, seems that our way of selecting reads is biased. Maybe the longest matching reads are mainly the ones that map at the centre, for this reason we have difficulties in getting information on the sides.
 

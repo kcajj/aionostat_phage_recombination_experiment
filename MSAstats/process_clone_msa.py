@@ -45,7 +45,7 @@ for population in populations:
         first_e_distribution, second_e_distribution = get_evidences_distributions(msa_matrix)
         distribution_evidence_sites=first_e_distribution+second_e_distribution
 
-        k=10
+        k=1000
         first_convoluted=np.convolve(first_e_distribution, np.ones(k), mode='same')
         second_convoluted=np.convolve(second_e_distribution, np.ones(k), mode='same')
         normaliser_convoluted=np.convolve(distribution_evidence_sites, np.ones(k), mode='same')
@@ -59,7 +59,6 @@ for population in populations:
         plt.plot(x, second_normalised, label=references[1])
         plt.xlabel('bp')
         plt.ylabel('evidence score')
-        plt.xlim([28100,28500])
         plt.legend()
         plt.savefig(out_folder, bbox_inches='tight')
         plt.close()
@@ -74,7 +73,6 @@ for population in populations:
         plt.plot(x, second_non_normalised, label=references[1])
         plt.xlabel('bp')
         plt.ylabel('evidence score')
-        plt.xlim([28100,28500])
         plt.legend()
         plt.savefig(out_folder, bbox_inches='tight')
         plt.close()
