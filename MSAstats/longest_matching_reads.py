@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import pandas as pd
 
+'''
+finds the reads in a bam file that have the longest matching length
+(average between primary and secondary mapping)
+'''
 def find_reads_with_secondary_mapping(bam_file):
     primary_positions = {}
     secondary_positions = defaultdict(list)

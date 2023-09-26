@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from analyse_bam import analyse_bam
 
 def plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder):
+    '''
+    plot the distribution of mismatches of a bam file
+    '''
     number_of_plots=len(mismatch_distribution.keys())+1
     fig, axs =plt.subplots(number_of_plots,sharex=True,constrained_layout = True, figsize=(8,10))
 

@@ -35,6 +35,10 @@ populations=['P2','P3']
 clones=['C1','C2','C3','C4']
 references=['EM11','EM60']
 
+'''
+takes a MSA, plots the distribution of evidences (mismatches)
+'''
+
 for population in populations:
     for clone in clones:
         file=f'MSAstats/results/msa/clones/{population}_{clone}_msa.fasta'

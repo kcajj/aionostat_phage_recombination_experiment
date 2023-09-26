@@ -9,6 +9,9 @@ def decode_flag(flag):
     if flag==256 or flag==272: return 'secondary'
 
 def analyse_bam(bam_file, ref_file):
+    '''
+    extracts the position of the mismatches in a bam file
+    '''
     ref = SeqIO.read(ref_file, "fasta")
     ref_name=ref.name
     ref_seq=ref.seq

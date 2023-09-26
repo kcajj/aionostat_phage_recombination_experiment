@@ -2,6 +2,10 @@ from Bio import SeqIO
 import gzip
 import pandas as pd
 
+'''
+takes the list of longest reads, searches them in the fastq file and stores their
+sequences in individual files
+'''
 def get_longest_seq(path, longest_reads, n):
     reads={}
     for i_read,row in enumerate(longest_reads.iterrows()):

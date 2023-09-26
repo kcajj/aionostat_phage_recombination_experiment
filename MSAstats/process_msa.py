@@ -2,6 +2,9 @@ from Bio import AlignIO
 import numpy as np
 import matplotlib.pyplot as plt
 
+'''
+takes a lot of MSA, plots the total distribution of evidences (mismatches) summing all MSAs
+'''
 def read_msa(path):
     alignment = AlignIO.read(open(path), "fasta")
     l=alignment.get_alignment_length()
