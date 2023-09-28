@@ -41,7 +41,7 @@ takes a MSA, plots the distribution of evidences (mismatches)
 
 for population in populations:
     for clone in clones:
-        file=f'MSAstats/results/msa/clones/{population}_{clone}_msa.fasta'
+        file=f'results/msa/clones/{population}_{clone}_msa.fasta'
         out_folder=f'results/plots/recombination_evidences/clones/{population}_{clone}_msa.png'
 
         msa_matrix=read_msa(file)

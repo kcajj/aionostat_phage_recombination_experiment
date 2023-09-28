@@ -1,11 +1,7 @@
 data
 /results/mappings
-/results/mappings
 .snakemake
 log
 __pycache__
 .obsidian
 results_evo_genome_analysis
-MSAstat/data
-chimeric_reads
-MSAstats/results

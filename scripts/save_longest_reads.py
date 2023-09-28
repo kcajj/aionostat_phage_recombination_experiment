@@ -32,15 +32,15 @@ populations=['P2','P3']
 timepoints=['1','3','5','7']
 for population in populations:
     for timepoint in timepoints:
-        file=f'MSAstats/data/population_reads/{population}_{timepoint}.fastq.gz'
+        file=f'data/population_reads/{population}_{timepoint}.fastq.gz'
 
-        longest_reads=pd.read_csv(f'MSAstats/results/longest_matching_reads/{population}/{population}_{timepoint}.csv')
+        longest_reads=pd.read_csv(f'results/longest_matching_reads/{population}/{population}_{timepoint}.csv')
 
         n=1000
         longest=get_longest_seq(file, longest_reads, n)
 
         for i_r,read in enumerate(longest):
-            out_file=open(f'MSAstats/results/seq_for_msa/{population}/{timepoint}/{population}_{timepoint}_{i_r}.fasta','w')
+            out_file=open(f'results/seq_for_msa/{population}/{timepoint}/{population}_{timepoint}_{i_r}.fasta','w')
             out_file.write('>'+read[0]+'\n'+read[1]+'\n')
         
         print(f'saved {n} reads for {population}, {timepoint}')

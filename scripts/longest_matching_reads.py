@@ -66,7 +66,7 @@ if __name__ == "__main__":
             
             print(f'selecting the best reads from {population} {timepoint}')
 
-            bam_file_path = f'MSAstats/data/population_alignments/{population}/{population}_{timepoint}.bam'
+            bam_file_path = f'data/population_alignments/{population}/{population}_{timepoint}.bam'
 
             primary_positions, secondary_positions = find_reads_with_secondary_mapping(bam_file_path)
 
@@ -89,4 +89,4 @@ if __name__ == "__main__":
             
             df=pd.DataFrame.from_dict(d)
 
-            df.to_csv(f'MSAstats/results/longest_matching_reads/{population}/{population}_{timepoint}.csv')
+            df.to_csv(f'results/longest_matching_reads/{population}/{population}_{timepoint}.csv')

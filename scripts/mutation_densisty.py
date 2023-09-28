@@ -54,9 +54,9 @@ if __name__ == "__main__":
     for population in populations:
         for isolate in isolates:
             
-            assembly_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/assemblies/{population}/{isolate}.fasta'
-            bam_file = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/{population}/{isolate}.bam'
-            out_folder = f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/{population}/{isolate}.png'
+            assembly_file=f'results/assemblies/{population}/{isolate}.fasta'
+            bam_file = f'results/mappings/{population}/{isolate}.bam'
+            out_folder = f'results/plots/{population}/{isolate}.png'
 
             mismatch_distribution, mapping = analyse_bam(bam_file, assembly_file)
 
@@ -64,9 +64,9 @@ if __name__ == "__main__":
 
     for reference in mismatch_distribution.keys():
         
-        ref_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/data/references/{reference}_assembly.fasta'
-        sam_file=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/mappings/references/{reference}.sam'
-        out_folder=f'/home/giacomocastagnetti/code/rec_genome_analysis/results/plots/references/{reference}.png'
+        ref_file=f'data/references/{reference}_assembly.fasta'
+        sam_file=f'results/mappings/references/{reference}.sam'
+        out_folder=f'results/plots/references/{reference}.png'
 
         mismatch_distribution, mapping = analyse_bam(sam_file, ref_file)
 

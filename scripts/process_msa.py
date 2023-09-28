@@ -45,7 +45,7 @@ for i in range(n):
     reads.append(str(i))
 
 references=[]
-references_msa='MSAstats/results/msa/refs_msa.fasta'
+references_msa='results/msa/refs_msa.fasta'
 references_alignment = AlignIO.read(open(references_msa), "fasta")
 l=references_alignment.get_alignment_length()
 for i,record in enumerate(references_alignment):
@@ -63,7 +63,7 @@ for population in populations:
         total_evidences=np.zeros(l)
 
         for read in reads:
-            file=f'MSAstats/results/msa/{population}/{timepoint}/{population}_{timepoint}_{read}_msa.fasta'
+            file=f'results/msa/{population}/{timepoint}/{population}_{timepoint}_{read}_msa.fasta'
             #file='/home/giacomocastagnetti/code/rec_genome_analysis/MSAstats/results/msa/clones/P2_C4_msa.fasta'
             
             msa_matrix=read_msa(file)
