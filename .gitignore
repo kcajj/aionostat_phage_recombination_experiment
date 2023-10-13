@@ -1,7 +1,9 @@
-data
-/results/mappings
 .snakemake
-log
 __pycache__
 .obsidian
+log
 results_evo_genome_analysis
+data
+/results/mappings
+/results/seq_for_msa
+/results/msa

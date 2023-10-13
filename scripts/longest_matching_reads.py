@@ -8,6 +8,12 @@ finds the reads in a bam file that have the longest matching length
 (average between primary and secondary mapping)
 '''
 def find_reads_with_secondary_mapping(bam_file):
+    '''
+    looks at all the secondary reads and stores read name and an array of useful information about the mapping in a dictionary
+    (not all the info in the array are useful actually, it's just a long array with random information).
+    then it looks at all the reads again to find the primary mappings of the secondary reads. it stores them in another
+    dictionary together with their mapping information
+    '''
     primary_positions = {}
     secondary_positions = defaultdict(list)
     with pysam.AlignmentFile(bam_file, "rb") as bam:
@@ -25,6 +31,10 @@ def find_reads_with_secondary_mapping(bam_file):
     return primary_positions, secondary_positions
 
 def clean_secondary(primary, secondary):
+    '''
+    cleans the two dictionary produced by the previous function.
+    it removes the read if the primary and secondary mapping are on the same reference.
+    '''
     to_delete=[]
 
     for primary_query_name, [primary_reference_name, primary_reference_start,l1,rev] in primary.items():
@@ -43,6 +53,9 @@ def clean_secondary(primary, secondary):
     return primary, secondary
 
 def get_longest_reads(primary, secondary, n):
+    '''
+    saves only the longest secondary mapping for each read among the remaining ones in the dictionary
+    '''
     longest_matching_reads={}
     for primary_query_name, [ref_name1, ref_start1, primary_alignment_length, is_reverse] in primary.items():
         for secondary_query_name, secondary_mappings in secondary.items():
@@ -72,8 +85,10 @@ if __name__ == "__main__":
 
             primary_positions, secondary_positions = clean_secondary(primary_positions, secondary_positions)
 
-            n=1000
+            n=1000 #number of best reads to select
             secondary_positions, longest_matching_reads = get_longest_reads(primary_positions, secondary_positions, n)
+
+            out_csv=f'results/longest_matching_reads/{population}/{population}_{timepoint}.csv'
 
             d=[]
             for read_name, data in longest_matching_reads:
@@ -89,4 +104,4 @@ if __name__ == "__main__":
             
             df=pd.DataFrame.from_dict(d)
 
-            df.to_csv(f'results/longest_matching_reads/{population}/{population}_{timepoint}.csv')
+            df.to_csv(out_csv)
