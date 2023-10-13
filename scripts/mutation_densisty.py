@@ -46,11 +46,13 @@ if __name__ == "__main__":
     
     populations=['P2','P3']
     isolates=['C1','C2','C3','C4']
-    k=1000
+    k=1000 #convolution window
 
+    #set some estetic parameters for the plots
     phage_colors={'EC2D2':'C2','EM11':'C0','EM60':'C1'}
     mapping_colors={'primary':'g','supplementary':'b','secondary':'r'}
 
+    #plot the clone assemblies mutation density
     for population in populations:
         for isolate in isolates:
             
@@ -62,6 +64,7 @@ if __name__ == "__main__":
 
             plot_mappings(mismatch_distribution, mapping, population, isolate, k, out_folder)
 
+    #plot the mutation density between reference genomes
     for reference in mismatch_distribution.keys():
         
         ref_file=f'data/references/{reference}_assembly.fasta'
