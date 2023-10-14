@@ -1,4 +1,4 @@
-nanopore_reads = 'data/nanopore/{population}_{isolate}.fastq.gz'
+nanopore_reads = 'data/clones_reads/{population}_{isolate}.fastq.gz'
 reference = 'data/references/{phage}_assembly.fasta'
 
 rule flye:

@@ -4,11 +4,19 @@ the objective of this repository is to carry out and track the exploratory work 
 
 this repository allows to:
 
-1. create the plots of mutation density distribution for phage clones assembly with respect to multiple reference genomes.
+1. run a snakemake pipeline that automatically processes the reads of phage isolates taken at the end of the experiment.
+    The pipeline performs:
+    - genome assembly of the clones
+    - alignment of reads to the assembly
+    - alignment of reference sequences (non recombined genomes) on the assembly
+    - alignment of the reference sequences between each other to estalish common parts
+    - alignment of the assembly sequences between each other to get the differences
+
+2. create the plots of mutation density distribution for phage clones assembly with respect to multiple reference genomes.
     - [analyse_bam.py](scripts/analyse_bam.py) defines a function that takes in input a bam file (alignment between assembly and reference) and a reference. It returnsthe distribution of mismatches between the assembly and the reference in an array.
     - [mutation_density.py](scripts/mutation_densisty.py) uses the function defined in analyse_bam.py, it takes the arrays of the distribution of mutation density of an assembly against multiple references and it creates a plot out of it.
 
-2. create plots of recombination evidences
+3. create plots of recombination evidences
     1. in single phage clones
         - create an MSA between the assembly and the references with MAFFT, for now you have to do it manually
         - [process_clone_msa.py](scripts/process_clone_msa.py) takes in input the msa of the alignment of clone assemblies with the references, computes the evidence distribution and builds its plot.
