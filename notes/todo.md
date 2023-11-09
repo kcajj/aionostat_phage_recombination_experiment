@@ -13,7 +13,7 @@
         - [ ] integrate the script in the pipeline (take in input the folders)
 - [ ] phage populations
     - [x] run evo genome analysis on the three references
-    - [ ] run evo genome analysis on the assembled recombinant genomes
+    - [x] run evo genome analysis on the assembled recombinant genomes
 - [ ] look into the results
     - [ ] secondary mappings in correspondance of the gap
 - [ ] improve the results
@@ -26,6 +26,7 @@
         - [ ] insert this plot in the pipeline
         - [ ] correct the title of the dotplot
     - [x] look at reads stats, filter reads by length
+        <pre>
         more or less half of the reads are above 2500
         between 10 to 20 % of reads are below 500. we can use it as a threshold.
         i did used some bash commands to filter out short reads
@@ -40,21 +41,20 @@
         do
         gzip P2_$t.fastq
         done
-    - [ ] sweep minimap parameters
+        </pre>
+    - [x] sweep minimap parameters
         - [x] asm-5
-        - [ ] -M
+        - [x] -M
         doesn't work
     - [x] msa alignment stats
         - [x] phage isolates
             - [x] msa with mafft
             - [x] extract stats and plot
-        - [ ] long reads
-            - [x] extract long reads
+        - [x] long reads
+            - [x] extract long reads (doesn't work)
+                - [x] select the reads by looking at population alignment data
+                - [x] select the reads having the best mapping
+            - [x] save the best reads in individual files
             - [x] msa with mafft
             - [x] plot
-            - [ ] use minimap to check the alignment of long reads
-            - [ ] select the reads by looking at population alignment data
-    - [ ] secondary reads alignment stats
-        - [ ] take the reads with a secondary mapping from the population alignment
-        - [ ] compare the two mappings
-        doesn't work
+    - [ ] 
