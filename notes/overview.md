@@ -1,9 +1,3 @@
-# using the pipeline
-
-I'm planning how to use which pipeline.
-
-I should start from the data i need to use
-
 # data
 
 the Aionostat run that generated the data had 2 vials with 3 phages in each of them. A third vial was set up as a negative control without phages.

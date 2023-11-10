@@ -619,7 +619,7 @@ mafft --auto results/seq_for_msa/refs.fasta > results/msa/refs_msa.fasta
 mafft --auto --addfragments results/longest_reads_seq/read_seq.fasta --keeplength results/msa/refs_msa.fasta > results/test.fasta
 </pre>
 
-you can find all the bash commands that I used in [bash_commands_used.txt](/MSAstats/bash_commands_used.txt)
+you can find all the bash commands that I used in [msa.md](/notes/msa.md)
 
 By creating the evidence plot of single reads we managed to find some recombinant ones:
 
