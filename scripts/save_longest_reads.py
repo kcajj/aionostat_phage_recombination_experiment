@@ -32,19 +32,21 @@ def get_longest_seq(path, longest_reads, n):
 
     return output
 
-populations=['P2','P3']
-timepoints=['1','3','5','7']
-for population in populations:
-    for timepoint in timepoints:
-        file=f'data/population_reads/{population}_{timepoint}.fastq.gz'#takes file with all reads
-        longest_reads=pd.read_csv(f'results/longest_matching_reads/{population}/{population}_{timepoint}.csv')#takes names of longest reads
-        out_fasta=f'results/seq_for_msa/{population}/{timepoint}/{population}_{timepoint}'
+if __name__ == "__main__":
+    
+    populations=['P2','P3']
+    timepoints=['1','3','5','7']
+    for population in populations:
+        for timepoint in timepoints:
+            file=f'data/population_reads/{population}_{timepoint}.fastq.gz'#takes file with all reads
+            longest_reads=pd.read_csv(f'results/longest_matching_reads/{population}/{population}_{timepoint}.csv')#takes names of longest reads
+            out_fasta=f'results/seq_for_msa/{population}/{timepoint}/{population}_{timepoint}'
 
-        n=1000#number of reads to save
-        longest=get_longest_seq(file, longest_reads, n)
+            n=1000#number of reads to save
+            longest=get_longest_seq(file, longest_reads, n)
 
-        for i_r,read in enumerate(longest):
-            out_file=open(f'{out_fasta}_{i_r}.fasta','w')
-            out_file.write('>'+read[0]+'\n'+read[1]+'\n')
-        
-        print(f'saved {n} reads for {population}, {timepoint}')
+            for i_r,read in enumerate(longest):
+                out_file=open(f'{out_fasta}_{i_r}.fasta','w')
+                out_file.write('>'+read[0]+'\n'+read[1]+'\n')
+            
+            print(f'saved {n} reads for {population}, {timepoint}')

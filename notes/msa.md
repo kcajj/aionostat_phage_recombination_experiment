@@ -4,10 +4,9 @@
 
 we want to create a msa between assembly and references
 
-command:
-mafft --auto data/P2C1_refs.fasta > results/C1msa.fasta
+mafft --auto results/seq_for_msa/P2C1_refs.fasta > results/msa/clones/P2_C1_msa.fasta
 
-now we want to load this file in biopython and put the sequences in a numpy matrix to analyse it with a script.
+this method works, now we want to load this file in biopython and put the sequences in a numpy matrix to analyse it with a script.
 
 ## reads
 
